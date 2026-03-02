@@ -4,13 +4,11 @@ import { navigateTo, renderRoute } from './router.js';
 import { loadSiteData, appData } from './content_data.js';
 
 
-
 /* =====================================================
    ESTADO GLOBAL
 ===================================================== */
 
 let currentSort = 'default';
-
 
 
 /* =====================================================
@@ -63,7 +61,6 @@ export const FavManager = {
 };
 
 
-
 /* =====================================================
    SORTING
 ===================================================== */
@@ -92,7 +89,6 @@ function applySorting(properties) {
 }
 
 
-
 /* =====================================================
    FILTROS
 ===================================================== */
@@ -108,10 +104,8 @@ function applyFilters() {
 
     let filtered = appData.properties.filter(p => {
 
-        // LOCALIZAÇÃO
         if (location !== 'all' && p.location !== location) return false;
 
-        // PREÇO
         if (price !== 'all') {
 
             if (p.priceValue === null) return false;
@@ -124,10 +118,8 @@ function applyFilters() {
             }
         }
 
-        // TIPOLOGIA
         if (type !== 'all' && p.tipologia !== type) return false;
 
-        // TERRENO (hectares)
         if (land !== 'all') {
             if (land === 'max') {
                 if (p.areaTerreno <= 500) return false;
@@ -136,7 +128,6 @@ function applyFilters() {
             }
         }
 
-        // CONSTRUÇÃO
         if (build !== 'all') {
             if (build === 'max') {
                 if (p.areaConstruida <= 600) return false;
@@ -145,7 +136,6 @@ function applyFilters() {
             }
         }
 
-        // QUARTOS
         if (rooms !== 'all' && p.quartos < parseInt(rooms)) return false;
 
         return true;
@@ -162,7 +152,6 @@ function applyFilters() {
         });
     }
 }
-
 
 
 function clearFilters() {
@@ -188,7 +177,6 @@ function clearFilters() {
 
     applyFilters();
 }
-
 
 
 /* =====================================================
@@ -219,7 +207,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 
-
 /* =====================================================
    GLOBAL CLICK LISTENER
 ===================================================== */
@@ -241,7 +228,7 @@ document.body.addEventListener('click', e => {
         clearFilters();
     }
 
-    // BOTÃO SORT TOGGLE
+    // SORT
     if (e.target.closest('#btn-sort')) {
 
         if (currentSort === 'default') {
@@ -263,6 +250,24 @@ document.body.addEventListener('click', e => {
         applyFilters();
     }
 
+    // 🔽🔼 TOGGLE FILTROS MOBILE
+    if (e.target.closest('#btn-toggle-filters')) {
+
+        const filters = document.getElementById('filters-bar');
+        const btn = document.getElementById('btn-toggle-filters');
+
+        if (!filters) return;
+
+        if (filters.classList.contains('hidden')) {
+            filters.classList.remove('hidden');
+            btn.innerText = 'Filtros ▴';
+        } else {
+            filters.classList.add('hidden');
+            btn.innerText = 'Filtros ▾';
+        }
+    }
+
+    // FAVORITOS
     const favBtn = e.target.closest('[data-fav-id]');
     if (favBtn) {
         e.stopPropagation();

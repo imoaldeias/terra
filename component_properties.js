@@ -81,8 +81,17 @@ export function renderProperties(filteredList = null) {
     return `
         <section class="pt-12 pb-24 px-6 sm:px-8 max-w-7xl mx-auto">
 
+            <div class="flex justify-end mb-6 lg:hidden">
+                <button 
+                    id="btn-toggle-filters"
+                    class="border border-gray-300 rounded-sm px-5 py-2 text-xs uppercase tracking-widest text-gray-600 hover:border-black hover:text-black transition"
+                >
+                    Filtros ▾
+                </button>
+            </div>
+
             <div id="filters-bar"
-                 class="mb-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 transition-all duration-300">
+                class="hidden lg:grid mb-12 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
 
                 ${renderSelect('filter-location', 'Localização',
                     [...new Set(appData.properties.map(p => p.location))])}
