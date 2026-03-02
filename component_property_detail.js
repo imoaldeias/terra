@@ -5,136 +5,70 @@ export function renderPropertyDetail(id) {
 
     if (!prop) {
         return `
-            <div class="py-40 text-center text-gray-500 l4">
+            <div class="py-40 text-center text-gray-500">
                 Propriedade não encontrada.
             </div>
         `;
     }
 
+    // GALERIA
     const galleryImages = prop.gallery_ids
-        ? prop.gallery_ids.split(',').map(img => img.trim())
+        ? prop.gallery_ids.split(',').map(img => img.trim()).filter(Boolean)
         : [];
 
     const imagesToShow = galleryImages.length > 0
         ? galleryImages
         : [prop.image];
 
+    const thumbnails = imagesToShow.slice(1); // excluir principal
+
     return `
         <article class="bg-white min-h-screen">
 
             <!-- HERO IMAGE -->
-            <div class="relative group">
-                <div class="h-[70vh] w-full overflow-hidden bg-gray-100">
-                    <img 
-                        id="main-gallery-image" 
-                        src="${imagesToShow[0]}" 
-                        class="w-full h-full object-cover transition-all duration-700"
-                    >
-                </div>
-
-                <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
-
-                <div class="absolute top-8 left-8">
-                    <button 
-                        data-route="properties" 
-                        class="flex items-center gap-3 bg-white/90 backdrop-blur-md px-6 py-3 rounded-full uppercase tracking-[0.25em] text-xs font-semibold hover:bg-white transition-all shadow-xl"
-                    >
-                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                        Voltar ao Portfólio
-                    </button>
-                </div>
+            <div class="h-[70vh] w-full overflow-hidden bg-gray-100">
+                <img 
+                    id="main-gallery-image"
+                    src="${imagesToShow[0]}"
+                    alt="${prop.title}"
+                    class="w-full h-full object-cover transition-all duration-700"
+                >
             </div>
 
-            <!-- GALLERY THUMBNAILS -->
-            ${imagesToShow.length > 1 ? `
-                <div class="max-w-7xl mx-auto px-6 -mt-12 relative z-10">
-                    <div class="flex gap-3 overflow-x-auto pb-4 no-scrollbar">
-                        ${imagesToShow.map((img, index) => `
-                            <div 
-                                class="flex-shrink-0 w-24 h-24 rounded-2xl overflow-hidden cursor-pointer border-2 
-                                ${index === 0 ? 'border-white shadow-lg scale-105' : 'border-transparent opacity-70 hover:opacity-100'} 
-                                transition-all"
-                                onclick="
-                                    document.getElementById('main-gallery-image').src='${img}';
-                                    this.parentElement.querySelectorAll('div').forEach(d => 
-                                        d.classList.remove('border-white','shadow-lg','scale-105','opacity-100')
-                                    );
-                                    this.classList.add('border-white','shadow-lg','scale-105','opacity-100');
-                                "
-                            >
-                                <img src="${img}" class="w-full h-full object-cover">
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            ` : ''}
+            <!-- MAIN CONTENT -->
+            <div class="max-w-7xl mx-auto px-6 py-20">
 
-            <!-- CONTENT -->
-            <div class="max-w-7xl mx-auto px-6 pt-16 pb-32">
+                <!-- BACK BUTTON -->
+                <button 
+                    data-route="properties"
+                    class="mb-12 flex items-center gap-3 text-xs uppercase tracking-[0.25em] font-semibold text-gray-500 hover:text-black transition"
+                >
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Voltar ao Portfólio
+                </button>
+
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-20">
-                    
+
                     <!-- LEFT COLUMN -->
-                    <div class="lg:col-span-2">
+                    <div class="lg:col-span-2 space-y-16">
 
                         <!-- HEADER -->
-                        <div class="mb-16">
+                        <div class="space-y-6">
                             
-                            <!-- Tipologia + Localização (L3) -->
-                            <span class="text-xs uppercase tracking-[0.25em] font-semibold text-gray-500 block mb-6">
-                                ${prop.tipologia} em ${prop.location}
+                            <span class="text-xs uppercase tracking-[0.25em] font-semibold text-gray-400">
+                                ${prop.tipologia} • ${prop.location}
                             </span>
 
-                            <!-- Nome Propriedade (L1) -->
-                            <h1 class="text-5xl font-serif font-light mb-10">
+                            <h1 class="text-5xl lg:text-6xl font-serif font-light leading-tight">
                                 ${prop.title}
                             </h1>
 
-                            <!-- META INFO -->
-                            <div class="flex flex-wrap gap-12 py-10 border-y border-gray-100">
-
-                                <div>
-                                    <div class="text-xs uppercase tracking-[0.25em] font-semibold text-gray-400 mb-3">
-                                        Terreno
-                                    </div>
-                                    <div class="text-base font-light leading-relaxed">
-                                        ${prop.areaTerreno} ha
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div class="text-xs uppercase tracking-[0.25em] font-semibold text-gray-400 mb-3">
-                                        Construção
-                                    </div>
-                                    <div class="text-base font-light leading-relaxed">
-                                        ${prop.areaConstruida} m²
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div class="text-xs uppercase tracking-[0.25em] font-semibold text-gray-400 mb-3">
-                                        Quartos
-                                    </div>
-                                    <div class="text-base font-light leading-relaxed">
-                                        ${prop.quartos || '-'}
-                                    </div>
-                                </div>
-
-                                <div class="ml-auto text-right">
-                                    <div class="text-xs uppercase tracking-[0.25em] font-semibold text-gray-400 mb-3">
-                                        Valor
-                                    </div>
-                                    <div class="text-base font-light leading-relaxed">
-                                        ${prop.price}
-                                    </div>
-                                </div>
-
-                            </div>
                         </div>
 
-                        <!-- DESCRIÇÃO -->
-                        <div>
-                            <h2 class="text-2xl font-serif font-light mb-8">
-                                Memória Descritiva
+                        <!-- DESCRIPTION -->
+                        <div class="space-y-8">
+                            <h2 class="text-2xl font-serif font-light">
+                                Descrição
                             </h2>
 
                             <div class="text-base font-light leading-relaxed text-gray-600 whitespace-pre-line">
@@ -142,37 +76,122 @@ export function renderPropertyDetail(id) {
                             </div>
                         </div>
 
-                    </div>
+                        <!-- CARACTERÍSTICAS -->
+                        <div class="space-y-10">
 
-                    <!-- RIGHT COLUMN -->
-                    <div class="lg:col-span-1">
-                        <div class="bg-brand-900 p-12 rounded-[40px] sticky top-32 shadow-2xl text-white relative">
-
-                            <h2 class="text-2xl font-serif font-light mb-6">
-                                Solicitar Dossier
+                            <h2 class="text-2xl font-serif font-light">
+                                Características
                             </h2>
 
-                            <p class="text-base font-light leading-relaxed text-white/80 mb-12">
-                                Tenha acesso aos detalhes técnicos, plantas e informação financeira confidencial deste ativo.
-                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-16 border-t border-gray-100 pt-10 text-sm font-light text-gray-700">
 
-                            <button 
-                                data-route="contact" 
-                                class="w-full bg-white text-brand-900 py-5 rounded-2xl uppercase tracking-[0.25em] text-xs font-semibold hover:bg-brand-50 transition-all shadow-xl"
-                            >
-                                Contacto Reservado
-                            </button>
+                                <div class="flex justify-between border-b border-gray-100 pb-4">
+                                    <span>Área Terreno</span>
+                                    <span>${prop.areaTerreno} ha</span>
+                                </div>
 
-                            <div class="mt-10 pt-8 border-t border-white/10 text-center">
-                                <p class="text-xs uppercase tracking-[0.25em] font-semibold text-white/40">
-                                    Ref: TP-${prop.id}
-                                </p>
+                                <div class="flex justify-between border-b border-gray-100 pb-4">
+                                    <span>Área Construída</span>
+                                    <span>${prop.areaConstruida} m²</span>
+                                </div>
+
+                                <div class="flex justify-between border-b border-gray-100 pb-4">
+                                    <span>Quartos</span>
+                                    <span>${prop.quartos || '-'}</span>
+                                </div>
+
+                                <div class="flex justify-between border-b border-gray-100 pb-4">
+                                    <span>Tipologia</span>
+                                    <span>${prop.tipologia}</span>
+                                </div>
+
+                                <div class="flex justify-between border-b border-gray-100 pb-4">
+                                    <span>Localização</span>
+                                    <span>${prop.location}</span>
+                                </div>
+
+                                <div class="flex justify-between border-b border-gray-100 pb-4">
+                                    <span>Referência</span>
+                                    <span>TP-${prop.id}</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- GALLERY GRID -->
+                        ${thumbnails.length > 0 ? `
+                        <div class="space-y-10">
+
+                            <h2 class="text-2xl font-serif font-light">
+                                Galeria
+                            </h2>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                ${thumbnails.map(img => `
+                                    <div 
+                                        class="aspect-[4/3] overflow-hidden bg-gray-100 cursor-pointer group"
+                                        onclick="document.getElementById('main-gallery-image').src='${img}'"
+                                    >
+                                        <img 
+                                            src="${img}" 
+                                            class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+                                            loading="lazy"
+                                        >
+                                    </div>
+                                `).join('')}
                             </div>
 
                         </div>
+                        ` : ''}
+
+                    </div>
+
+                    <!-- RIGHT SIDEBAR -->
+                    <div class="lg:col-span-1">
+
+                        <div class="border border-gray-200 p-10 rounded-3xl sticky top-32 space-y-10">
+
+                            <div class="space-y-4">
+                                <div class="text-xs uppercase tracking-[0.25em] font-semibold text-gray-400">
+                                    Investimento
+                                </div>
+                                <div class="text-3xl font-serif font-light">
+                                    ${prop.price}
+                                </div>
+                            </div>
+
+                            <div class="border-t border-gray-100 pt-8 space-y-6 text-sm font-light text-gray-600">
+
+                                <div class="flex justify-between">
+                                    <span>Terreno</span>
+                                    <span>${prop.areaTerreno} ha</span>
+                                </div>
+
+                                <div class="flex justify-between">
+                                    <span>Construção</span>
+                                    <span>${prop.areaConstruida} m²</span>
+                                </div>
+
+                                <div class="flex justify-between">
+                                    <span>Quartos</span>
+                                    <span>${prop.quartos || '-'}</span>
+                                </div>
+
+                            </div>
+
+                            <button 
+                                data-route="contact"
+                                class="w-full border border-black py-4 uppercase tracking-[0.25em] text-xs font-semibold hover:bg-black hover:text-white transition"
+                            >
+                                Solicitar Informações
+                            </button>
+
+                        </div>
+
                     </div>
 
                 </div>
+
             </div>
 
         </article>

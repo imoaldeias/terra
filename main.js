@@ -252,20 +252,19 @@ document.body.addEventListener('click', e => {
 
     // 🔽🔼 TOGGLE FILTROS MOBILE
     if (e.target.closest('#btn-toggle-filters')) {
-
         const filters = document.getElementById('filters-bar');
         const btn = document.getElementById('btn-toggle-filters');
 
-        if (!filters) return;
-
-        if (filters.classList.contains('hidden')) {
-            filters.classList.remove('hidden');
-            btn.innerText = 'Filtros ▴';
-        } else {
-            filters.classList.add('hidden');
-            btn.innerText = 'Filtros ▾';
-        }
+    if (filters.classList.contains('hidden')) {
+        filters.classList.remove('hidden');
+        filters.classList.add('grid'); // Garante que vira grid ao aparecer
+        btn.innerText = 'Filtros ▴';
+    } else {
+        filters.classList.add('hidden');
+        filters.classList.remove('grid'); 
+        btn.innerText = 'Filtros ▾';
     }
+}
 
     // FAVORITOS
     const favBtn = e.target.closest('[data-fav-id]');
