@@ -6,6 +6,14 @@ import { loadSiteData, appData } from './content_data.js';
 
 
 /* =====================================================
+   ESTADO GLOBAL
+===================================================== */
+
+let currentSort = 'default';
+
+
+
+/* =====================================================
    FAVORITOS
 ===================================================== */
 
@@ -35,10 +43,8 @@ export const FavManager = {
     updateUI() {
 
         const favs = this.getFavs();
-        const count = favs.length;
-
         const counter = document.getElementById('fav-count');
-        if (counter) counter.innerText = count;
+        if (counter) counter.innerText = favs.length;
 
         document.querySelectorAll('[data-fav-id]').forEach(btn => {
 
@@ -64,13 +70,9 @@ export const FavManager = {
 
 function applySorting(properties) {
 
-    const sortValue = document.getElementById('sort-select')?.value;
-
-    if (!sortValue || sortValue === 'default') return properties;
-
     const sorted = [...properties];
 
-    if (sortValue === 'price-asc') {
+    if (currentSort === 'price-asc') {
         sorted.sort((a, b) => {
             if (a.priceValue === null) return 1;
             if (b.priceValue === null) return -1;
@@ -78,7 +80,7 @@ function applySorting(properties) {
         });
     }
 
-    if (sortValue === 'price-desc') {
+    if (currentSort === 'price-desc') {
         sorted.sort((a, b) => {
             if (a.priceValue === null) return 1;
             if (b.priceValue === null) return -1;
@@ -97,65 +99,64 @@ function applySorting(properties) {
 
 function applyFilters() {
 
-    const locationFilter = document.getElementById('filter-location')?.value;
-    const priceLimit = document.getElementById('filter-price')?.value;
+    const location = document.getElementById('filter-location')?.value;
+    const price = document.getElementById('filter-price')?.value;
     const type = document.getElementById('filter-type')?.value;
-    const landAreaLimit = document.getElementById('filter-land')?.value;
-    const buildAreaLimit = document.getElementById('filter-build')?.value;
-    const roomsLimit = document.getElementById('filter-rooms')?.value;
+    const land = document.getElementById('filter-land')?.value;
+    const build = document.getElementById('filter-build')?.value;
+    const rooms = document.getElementById('filter-rooms')?.value;
 
-    const filtered = appData.properties.filter(p => {
+    let filtered = appData.properties.filter(p => {
 
-        if (locationFilter !== 'all' && p.location !== locationFilter) return false;
+        // LOCALIZAÇÃO
+        if (location !== 'all' && p.location !== location) return false;
 
-        /* PRICE FILTER */
-        if (priceLimit !== 'all') {
+        // PREÇO
+        if (price !== 'all') {
 
-            if (priceLimit.endsWith('+')) {
-            const min = parseInt(priceLimit.replace('+', ''));
-            if (p.priceValue <= min) return false;
+            if (p.priceValue === null) return false;
+
+            if (price.endsWith('+')) {
+                const min = parseInt(price.replace('+', ''));
+                if (p.priceValue <= min) return false;
             } else {
-                if (p.priceValue > parseInt(priceLimit)) return false;
+                if (p.priceValue > parseInt(price)) return false;
             }
         }
 
-        /* TIPOLOGIA */
+        // TIPOLOGIA
         if (type !== 'all' && p.tipologia !== type) return false;
 
-        /* TERRENO (hectares directly stored) */
-        if (landAreaLimit !== 'all') {
-
-            if (landAreaLimit === 'max') {
+        // TERRENO (hectares)
+        if (land !== 'all') {
+            if (land === 'max') {
                 if (p.areaTerreno <= 500) return false;
             } else {
-                if (p.areaTerreno > parseInt(landAreaLimit)) return false;
+                if (p.areaTerreno > parseInt(land)) return false;
             }
         }
 
-        /* CONSTRUÇÃO */
-        if (buildAreaLimit !== 'all') {
-            if (buildAreaLimit === 'max') {
+        // CONSTRUÇÃO
+        if (build !== 'all') {
+            if (build === 'max') {
                 if (p.areaConstruida <= 600) return false;
             } else {
-                if (p.areaConstruida > parseInt(buildAreaLimit)) return false;
+                if (p.areaConstruida > parseInt(build)) return false;
             }
         }
 
-        /* QUARTOS */
-        if (roomsLimit !== 'all' && p.quartos < parseInt(roomsLimit)) return false;
+        // QUARTOS
+        if (rooms !== 'all' && p.quartos < parseInt(rooms)) return false;
 
         return true;
     });
 
     const finalList = applySorting(filtered);
 
-    const listContainer = document.getElementById('properties-list');
-
-    if (listContainer) {
+    const container = document.getElementById('properties-list');
+    if (container) {
         import('./component_properties.js').then(module => {
-
-            listContainer.innerHTML = module.renderPropertyCards(finalList);
-
+            container.innerHTML = module.renderPropertyCards(finalList);
             if (window.lucide) lucide.createIcons();
             FavManager.updateUI();
         });
@@ -180,8 +181,10 @@ function clearFilters() {
         if (el) el.value = 'all';
     });
 
-    const sort = document.getElementById('sort-select');
-    if (sort) sort.value = 'default';
+    currentSort = 'default';
+
+    const sortBtn = document.getElementById('btn-sort');
+    if (sortBtn) sortBtn.innerText = 'Ordenar: —';
 
     applyFilters();
 }
@@ -218,7 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 /* =====================================================
-   GLOBAL LISTENERS
+   GLOBAL CLICK LISTENER
 ===================================================== */
 
 document.body.addEventListener('click', e => {
@@ -238,18 +241,32 @@ document.body.addEventListener('click', e => {
         clearFilters();
     }
 
+    // BOTÃO SORT TOGGLE
+    if (e.target.closest('#btn-sort')) {
+
+        if (currentSort === 'default') {
+            currentSort = 'price-asc';
+        } else if (currentSort === 'price-asc') {
+            currentSort = 'price-desc';
+        } else {
+            currentSort = 'default';
+        }
+
+        const btn = document.getElementById('btn-sort');
+
+        if (btn) {
+            if (currentSort === 'default') btn.innerText = 'Ordenar: —';
+            if (currentSort === 'price-asc') btn.innerText = 'Ordenar: Preço ↑';
+            if (currentSort === 'price-desc') btn.innerText = 'Ordenar: Preço ↓';
+        }
+
+        applyFilters();
+    }
+
     const favBtn = e.target.closest('[data-fav-id]');
     if (favBtn) {
         e.stopPropagation();
         FavManager.toggleFav(parseInt(favBtn.dataset.favId));
     }
 
-});
-
-
-/* SORT CHANGE LISTENER */
-document.body.addEventListener('change', e => {
-    if (e.target.id === 'sort-select') {
-        applyFilters();
-    }
 });

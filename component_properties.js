@@ -81,21 +81,8 @@ export function renderProperties(filteredList = null) {
     return `
         <section class="pt-12 pb-24 px-6 sm:px-8 max-w-7xl mx-auto">
 
-            <!-- FILTROS -->
-
-            <div class="mb-8 flex justify-end">
-    <select 
-        id="sort-select"
-        class="border-b border-gray-300 bg-transparent py-2 px-2 text-sm font-light"
-    >
-        <option value="default">Ordenar por</option>
-        <option value="price-asc">Preço: Crescente</option>
-        <option value="price-desc">Preço: Decrescente</option>
-    </select>
-</div>
-
             <div id="filters-bar"
-     class="mb-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 transition-all duration-300">
+                 class="mb-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 transition-all duration-300">
 
                 ${renderSelect('filter-location', 'Localização',
                     [...new Set(appData.properties.map(p => p.location))])}
@@ -126,7 +113,7 @@ export function renderProperties(filteredList = null) {
                     [
                         { value: '300', label: 'Até 200 m²' },
                         { value: '600', label: 'Até 500 m²' },
-                        { value: 'max', label: 'Mais de 500' }
+                        { value: 'max', label: 'Mais de 500 m²' }
                     ])}
 
                 ${renderSelect('filter-rooms', 'Quartos',
@@ -136,28 +123,34 @@ export function renderProperties(filteredList = null) {
                         { value: '5', label: '5+' }
                     ])}
 
-                <!-- Botões -->
+                <!-- BOTÕES -->
                 <div class="col-span-full flex flex-col sm:flex-row gap-4 mt-2">
 
                     <button 
                         id="btn-apply-filters"
-                        class="border border-black px-5 py-2.5 text-[10px] uppercase tracking-[0.2em] font-semibold hover:bg-black hover:text-white transition duration-300"
+                        class="border border-black px-5 py-1 text-[10px] uppercase tracking-[0.2em] font-semibold hover:bg-black hover:text-white transition duration-300"
                     >
                         Aplicar
                     </button>
 
                     <button 
                         id="btn-clear-filters"
-                        class="border border-gray-300 px-5 py-2.5 text-[10px] uppercase tracking-[0.2em] font-semibold hover:bg-gray-100 transition duration-300"
+                        class="border border-gray-300 px-5 py-1 text-[10px] uppercase tracking-[0.2em] font-semibold hover:bg-gray-100 transition duration-300"
                     >
                         Limpar
+                    </button>
+
+                    <button 
+                        id="btn-sort"
+                        class="border border-gray-300 rounded-sm px-5 py-1 text-[10px] uppercase tracking-[0.2em] font-medium text-gray-600 hover:border-black hover:text-black transition duration-300"
+                    >
+                        Ordenar: —
                     </button>
 
                 </div>
 
             </div>
 
-            <!-- LISTA -->
             <div id="properties-list">
                 ${renderPropertyCards(properties)}
             </div>
