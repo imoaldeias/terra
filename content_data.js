@@ -36,16 +36,33 @@ function capitalizeFirst(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+function escapeHTML(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 function normalizeProperty(p) {
     return {
         id: toNumber(p.id),
 
-        title: (p.title || '').trim(),
-        location: (p.location || '').trim(),
+        // TEXTOS (AGORA PROTEGIDOS)
+        title: escapeHTML((p.title || '').trim()),
+        location: escapeHTML((p.location || '').trim()),
         locationNormalized: (p.location || '').trim().toLowerCase(),
-        tipologia: capitalizeFirst((p.tipologia || '').trim()),
 
-        price: (p.price || '').trim(),
+        tipologia: escapeHTML(
+            capitalizeFirst((p.tipologia || '').trim())
+        ),
+
+        price: escapeHTML((p.price || '').trim()),
+        description: escapeHTML((p.description || '').trim()),
+
+        // NÚMEROS (NÃO MEXER)
         priceValue: p.priceValue && p.priceValue.trim() !== ''
             ? parseInt(
                 p.priceValue
@@ -53,14 +70,13 @@ function normalizeProperty(p) {
                     .replace(/\s/g, '')
                     .replace('€', '')
             )
-        : null,
+            : null,
 
         areaConstruida: toNumber(p.areaConstruida),
         areaTerreno: toNumber(p.areaTerreno),
         quartos: toNumber(p.quartos),
 
-        description: (p.description || '').trim(),
-
+        // OUTROS
         gallery_ids: (p.gallery_ids || '').trim(),
 
         image: p.image_capa && p.image_capa.trim() !== ''

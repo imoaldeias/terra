@@ -93,7 +93,7 @@ function applySorting(properties) {
    FILTROS
 ===================================================== */
 
-function applyFilters() {
+export function applyFilters() {
 
     const location = document.getElementById('filter-location')?.value;
     const price = document.getElementById('filter-price')?.value;
