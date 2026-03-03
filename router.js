@@ -70,6 +70,12 @@ export function renderRoute() {
             }, 0);
         }
 
+if (hash === 'properties') {
+    import('./main.js').then(m => {
+        m.applyFilters();
+    });
+}
+
         if (window.lucide) lucide.createIcons();
 
         import('./main.js').then(m => m.FavManager.updateUI());

@@ -1,38 +1,29 @@
-// content_data.js
+/* =====================================================
+   content_data.js
+===================================================== */
 
-import Papa from 'https://cdn.skypack.dev/papaparse';
-
-/**
- * Estado global da aplicação.
- * Guarda todas as propriedades carregadas.
- */
 export let appData = {
     properties: [],
     about: {
-        title: "TerraPrimus Heritage Estate",
-        subtitle: "Líderes na Gestão de Ativos Rurais de Luxo",
-        description: "Curadoria exclusiva de ativos que representam o melhor do património rural português.",
-        values: ["Confidencialidade", "Rigor Técnico", "Valorização"]
+        title: "TerraPrima Alentejo Heritage Estate",
+        subtitle: "Representação e Gestão de Ativos Rurais",
+        description: "Estrutura especializada na gestão e valorização de património rural.",
+        values: ["Confidencialidade", "Rigor", "Visão de Longo Prazo"]
     }
 };
 
-// URL pública do Google Sheets em formato CSV
 const SHEET_CSV_URL =
     'https://docs.google.com/spreadsheets/d/e/2PACX-1vSMJLh55N7yiksusMxcYd7XpWTo1GE6y0FpSPiqLLBrzodkh2AGLen7aHl8D2RmEj239c7mjvvNS6UW/pub?output=csv';
 
-/**
- * Função auxiliar para converter valores numéricos de forma segura.
- */
+/* ================= HELPERS ================= */
+
 function toNumber(value) {
     const num = parseInt(value);
     return isNaN(num) ? 0 : num;
 }
 
-/**
- * Normaliza cada propriedade recebida do Google Sheets.
- */
-
 function capitalizeFirst(str) {
+    if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -50,7 +41,6 @@ function normalizeProperty(p) {
     return {
         id: toNumber(p.id),
 
-        // TEXTOS (AGORA PROTEGIDOS)
         title: escapeHTML((p.title || '').trim()),
         location: escapeHTML((p.location || '').trim()),
         locationNormalized: (p.location || '').trim().toLowerCase(),
@@ -62,7 +52,6 @@ function normalizeProperty(p) {
         price: escapeHTML((p.price || '').trim()),
         description: escapeHTML((p.description || '').trim()),
 
-        // NÚMEROS (NÃO MEXER)
         priceValue: p.priceValue && p.priceValue.trim() !== ''
             ? parseInt(
                 p.priceValue
@@ -76,7 +65,6 @@ function normalizeProperty(p) {
         areaTerreno: toNumber(p.areaTerreno),
         quartos: toNumber(p.quartos),
 
-        // OUTROS
         gallery_ids: (p.gallery_ids || '').trim(),
 
         image: p.image_capa && p.image_capa.trim() !== ''
@@ -85,34 +73,77 @@ function normalizeProperty(p) {
     };
 }
 
-/**
- * Carrega dados do Google Sheets.
- */
-export async function loadSiteData() {
-    return new Promise((resolve, reject) => {
+/* ================= SIMPLE CSV PARSER ================= */
 
-        Papa.parse(SHEET_CSV_URL, {
-            download: true,
-            header: true,
-            skipEmptyLines: true,
+function parseCSV(text) {
+    const rows = [];
+    const lines = text.trim().split('\n');
 
-            complete: (results) => {
+    // Properly handle quoted CSV
+    const parseLine = (line) => {
+        const result = [];
+        let current = '';
+        let insideQuotes = false;
 
-                try {
-                    const cleanData = results.data
-                        .map(normalizeProperty)
-                        .filter(p => p.id !== 0); // remove entradas inválidas
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
 
-                    appData.properties = cleanData;
+            if (char === '"') {
+                insideQuotes = !insideQuotes;
+            } else if (char === ',' && !insideQuotes) {
+                result.push(current);
+                current = '';
+            } else {
+                current += char;
+            }
+        }
 
-                    resolve(cleanData);
+        result.push(current);
+        return result.map(v => v.replace(/^"|"$/g, '').trim());
+    };
 
-                } catch (error) {
-                    reject(error);
-                }
-            },
+    const headers = parseLine(lines[0]);
 
-            error: (error) => reject(error)
+    for (let i = 1; i < lines.length; i++) {
+        const values = parseLine(lines[i]);
+        const obj = {};
+
+        headers.forEach((header, index) => {
+            obj[header.trim()] = values[index] || '';
         });
-    });
+
+        rows.push(obj);
+    }
+
+    return rows;
+}
+
+/* ================= DATA LOADER ================= */
+
+export async function loadSiteData() {
+    try {
+        const response = await fetch(SHEET_CSV_URL);
+
+        if (!response.ok) {
+            throw new Error("Falha ao carregar CSV");
+        }
+
+        const csvText = await response.text();
+
+        const rawData = parseCSV(csvText);
+
+        const cleanData = rawData
+            .map(normalizeProperty)
+            .filter(p => p.id !== 0);
+
+        appData.properties = cleanData;
+
+        console.log("✅ Propriedades carregadas:", cleanData.length);
+
+        return cleanData;
+
+    } catch (error) {
+        console.error("❌ Erro real:", error);
+        throw error;
+    }
 }

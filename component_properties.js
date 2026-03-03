@@ -1,5 +1,6 @@
 import { appData } from './content_data.js';
 
+
 /* =====================================================
    CARDS DAS PROPRIEDADES
 ===================================================== */
@@ -170,9 +171,7 @@ export function renderProperties(filteredList = null) {
 
             </div>
 
-            <div id="properties-list">
-                ${renderPropertyCards(properties)}
-            </div>
+        <div id="properties-list"></div>    
 
         </section>
     `;
