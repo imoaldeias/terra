@@ -57,6 +57,19 @@ export function renderRoute() {
         app.innerHTML = content;
         app.style.opacity = '1';
 
+        // Auto aplicar filtros ao mudar selects
+        if (hash === 'properties') {
+            setTimeout(() => {
+                document.querySelectorAll('#filters-bar select')
+                    .forEach(sel =>
+                        sel.addEventListener('change', () => {
+                            import('./main.js')
+                                .then(m => m.applyFilters());
+                        })
+                    );
+            }, 0);
+        }
+
         if (window.lucide) lucide.createIcons();
 
         import('./main.js').then(m => m.FavManager.updateUI());

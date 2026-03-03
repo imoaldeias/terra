@@ -69,8 +69,13 @@ export function renderPropertyDetail(id) {
 }
 
     const galleryImages = prop.gallery_ids
-        ? prop.gallery_ids.split(',').map(img => img.trim()).filter(Boolean)
-        : [];
+    ? prop.gallery_ids
+        .replace(/\r/g, '')
+        .replace(/\n/g, ',')
+        .split(',')
+        .map(img => img.trim())
+        .filter(img => img.length > 5)
+    : [];
 
     const imagesToShow = galleryImages.length > 0
         ? galleryImages
