@@ -57,24 +57,25 @@ export function renderRoute() {
         app.innerHTML = content;
         app.style.opacity = '1';
 
-        // Auto aplicar filtros ao mudar selects
         if (hash === 'properties') {
             setTimeout(() => {
-                document.querySelectorAll('#filters-bar select')
-                    .forEach(sel =>
-                        sel.addEventListener('change', () => {
-                            import('./main.js')
-                                .then(m => m.applyFilters());
-                        })
-                    );
+
+                import('./main.js').then(m => {
+
+                    // Attach change listeners
+                    document.querySelectorAll('#filters-bar select')
+                        .forEach(sel =>
+                            sel.addEventListener('change', () => {
+                                m.applyFilters();
+                            })
+                        );
+
+                // 🔥 Render properties ONCE on route load
+                m.applyFilters();
+            });
+
             }, 0);
         }
-
-if (hash === 'properties') {
-    import('./main.js').then(m => {
-        m.applyFilters();
-    });
-}
 
         if (window.lucide) lucide.createIcons();
 

@@ -82,9 +82,7 @@ export function renderPropertyCards(properties) {
    PÁGINA COMPLETA DE PROPRIEDADES
 ===================================================== */
 
-export function renderProperties(filteredList = null) {
-
-    const properties = filteredList || appData.properties;
+export function renderProperties() {
 
     return `
         <section class="pt-12 pb-24 px-6 sm:px-8 max-w-7xl mx-auto">
@@ -133,9 +131,10 @@ export function renderProperties(filteredList = null) {
 
                 ${renderSelect('filter-build', 'Área Construída',
                     [
+                        { value: '100', label: 'Até 100 m²' },
                         { value: '200', label: 'Até 200 m²' },
-                        { value: '500', label: 'Até 500 m²' },
-                        { value: 'max', label: 'Mais de 500 m²' }
+                        { value: '300', label: 'Até 300 m²' },
+                        { value: 'max', label: 'Mais de 300 m²' }
                     ])}
 
                 ${renderSelect('filter-rooms', 'Quartos',

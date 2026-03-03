@@ -2,6 +2,7 @@
 
 import { navigateTo, renderRoute } from './router.js';
 import { loadSiteData, appData } from './content_data.js';
+import { renderPropertyCards } from './component_properties.js';
 
 
 /* =====================================================
@@ -11,6 +12,7 @@ import { loadSiteData, appData } from './content_data.js';
 let currentSort = 'default';
 let currentPage = 1;
 const ITEMS_PER_PAGE = 12;
+let currentFilteredList = [];
 
 
 /* =====================================================
@@ -52,12 +54,12 @@ export const FavManager = {
             const icon = btn.querySelector('i');
 
             if (favs.includes(id)) {
-                btn.classList.add('text-red-500');
-                if (icon) icon.style.fill = 'currentColor';
-            } else {
-                btn.classList.remove('text-red-500');
-                if (icon) icon.style.fill = 'none';
-            }
+    btn.classList.add('text-red-500');
+    if (icon) icon.setAttribute('fill', 'currentColor');
+} else {
+    btn.classList.remove('text-red-500');
+    if (icon) icon.setAttribute('fill', 'none');
+}
         });
     }
 };
@@ -145,12 +147,17 @@ export function applyFilters() {
         return true;
     });
 
-    const finalList = applySorting(filtered);
-
-// 🔁 Reset to first page when filtering
+    // 🔁 Reset to first page when filtering
 currentPage = 1;
 
+// 🔥 Store filtered list globally
+currentFilteredList = filtered;
+
+// Apply sorting AFTER storing
+const finalList = applySorting(currentFilteredList);
+
 renderPaginatedProperties(finalList);
+
 }
 
 
@@ -189,17 +196,13 @@ function renderPaginatedProperties(list) {
 
     const paginated = list.slice(start, end);
 
-    import('./component_properties.js').then(module => {
+    container.innerHTML =
+        renderPropertyCards(paginated) +
+        renderPaginationUI(totalPages);
 
-        container.innerHTML =
-            module.renderPropertyCards(paginated) +
-            renderPaginationUI(totalPages);
-
-        if (window.lucide) lucide.createIcons();
-        FavManager.updateUI();
-    });
+    if (window.lucide) lucide.createIcons();
+    FavManager.updateUI();
 }
-
 
 function renderPaginationUI(totalPages) {
 
@@ -255,6 +258,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             '<div class="py-40 text-center text-gray-400 font-light">A carregar ativos...</div>';
 
         await loadSiteData();
+
+        // 🔥 Initialize filtered list
+        currentFilteredList = appData.properties;
 
 renderRoute();
 
@@ -342,8 +348,8 @@ document.body.addEventListener('click', e => {
 
         const action = pageBtn.dataset.page;
 
-        let filtered = appData.properties;
-        const finalList = applySorting(filtered);
+        // Use stored filtered list instead of full dataset
+        const finalList = applySorting(currentFilteredList);
         const totalPages = Math.ceil(finalList.length / ITEMS_PER_PAGE);
 
         if (action === 'prev') currentPage--;

@@ -145,12 +145,13 @@ export function renderSell() {
                             <select class="pb-4 border-b border-gray-200 bg-transparent text-base font-light leading-relaxed outline-none cursor-pointer focus:border-brand-900 transition-colors">
                                 <option value="" disabled selected>Área do Terreno</option>
                                 <option value="all">Todas as áreas</option>
-                                <option value="5000">Até 0.5 ha</option>
-                                <option value="10000">Até 1 ha</option>
-                                <option value="50000">Até 5 ha</option>
-                                <option value="max">Mais de 5 ha</option>
+                                <option value="1">Até 1 ha</option>
+                                <option value="10">Até 10 ha</option>
+                                <option value="50">Até 50 ha</option>
+                                <option value="100">Até 100 ha</option>
+                                <option value="500">Até 500 ha</option>
+                                <option value="max">Mais de 500 ha</option>
                             </select>
-                        </div>
 
                         <textarea 
                             placeholder="Localização e breves detalhes..." 
