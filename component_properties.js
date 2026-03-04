@@ -19,54 +19,46 @@ export function renderPropertyCards(properties) {
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
 
             ${properties.map(p => `
-                
+
                 <div class="group cursor-pointer transition-all duration-300 hover:-translate-y-1"
                      data-route="property-${p.id}">
-                    
-                    <!-- IMAGEM QUADRADA -->
+
+                    <!-- IMAGEM -->
                     <div class="relative aspect-square overflow-hidden bg-gray-100">
-                        <img 
-                            src="${p.image}" 
+                        <img
+                            src="${p.image}"
                             alt="${p.title}"
                             loading="lazy"
                             decoding="async"
                             class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
                         >
 
-                        <button 
+                        <!-- HEART -->
+                        <button
                             data-fav-id="${p.id}"
                             class="absolute top-4 right-4 text-white"
+                            style="background:none; border:none; padding:0; cursor:pointer;"
                         >
                             <i data-lucide="heart" class="w-5 h-5"></i>
                         </button>
                     </div>
 
-                    <!-- CONTEÚDO -->
-                    <div class="pt-4 space-y-3">
-
-                        <!-- LINHA 1 -->
-                        <div class="flex justify-between pt-1 border-t border-gray-100">
-                            <span>${p.title}</span>
-                            <span>${p.location}</span>
+                    <!-- ESTATE TAG -->
+                    <div style="background:#2F3526; padding:14px 16px 12px;">
+                        <p style="font-family:'Instrument Serif',serif; font-style:italic; font-size:1.05rem; color:#FAF7F2; margin:0 0 4px 0; line-height:1.2;">
+                            ${p.title}
+                        </p>
+                        <p style="font-family:'Instrument Sans',sans-serif; font-size:0.58rem; letter-spacing:0.22em; text-transform:uppercase; color:#C9D2C2; margin:0 0 10px 0;">
+                            ${p.location}
+                        </p>
+                        <div style="display:flex; justify-content:space-between; align-items:baseline; border-top:1px solid rgba(201,210,194,0.2); padding-top:8px;">
+                            <span style="font-family:'Instrument Serif',serif; font-size:0.95rem; color:#FAF7F2;">
+                                ${p.price}
+                            </span>
+                            <span style="font-family:'Instrument Sans',sans-serif; font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:#C9D2C2;">
+                                ${p.areaTerreno > 0 ? p.areaTerreno + ' ha' : p.areaConstruida + ' m²'}
+                            </span>
                         </div>
-
-                        <!-- LINHA 2 -->
-                        <div class="flex justify-between pt-1 border-t border-gray-100">
-                            <span>${p.price}</span>
-                            <span>${p.tipologia}</span>
-                        </div>
-
-                        ${p.quartos > 0 ? `
-                        <div class="flex justify-between pt-1 border-t border-gray-100">
-                            <span>${p.areaTerreno} ha</span>
-                            <span>${p.quartos === 1 ? '1 quarto' : `${p.quartos} quartos`}</span>
-                        </div>
-                        ` : `
-                        <div class="flex justify-between pt-1 border-t border-gray-100">
-                            <span>${p.areaTerreno} ha</span>
-                        </div>
-                        `}
-
                     </div>
 
                 </div>
@@ -90,9 +82,10 @@ export function renderProperties() {
             <div class="max-w-7xl mx-auto px-6">
 
             <div class="flex justify-end mb-6 lg:hidden">
-                <button 
+                <button
                     id="btn-toggle-filters"
-                    class="border border-gray-300 rounded-sm px-5 py-2 transition hover:border-black"
+                    class="border border-gray-300 rounded-sm px-3 py-1 transition hover:border-black"
+                    style="font-size:0.75rem; letter-spacing:0.08em;"
                 >
                     Filtros ▾
                 </button>
@@ -149,21 +142,21 @@ export function renderProperties() {
                 <!-- BOTÕES -->
                 <div class="col-span-full flex flex-col sm:flex-row gap-4 mt-2">
 
-                    <button 
+                    <button
                         id="btn-apply-filters"
                         class="border border-black px-6 py-2 hover:bg-black hover:text-white transition duration-300"
                     >
                         Aplicar
                     </button>
 
-                    <button 
+                    <button
                         id="btn-clear-filters"
                         class="border border-black px-6 py-2 hover:bg-black hover:text-white transition duration-300"
                     >
                         Limpar
                     </button>
 
-                    <button 
+                    <button
                         id="btn-sort"
                         class="border border-black px-6 py-2 hover:bg-black hover:text-white transition duration-300"
                     >
@@ -199,14 +192,14 @@ function renderSelect(id, label, options) {
     return `
         <div class="flex flex-col">
 
-            <label 
-                for="${id}" 
+            <label
+                for="${id}"
                 class="label mb-2"
             >
                 ${label}
             </label>
 
-            <select 
+            <select
                 id="${id}"
                 class="border-b border-gray-300 bg-transparent py-2 px-1 focus:outline-none focus:border-black transition"
             >

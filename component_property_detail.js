@@ -80,7 +80,7 @@ export function renderPropertyDetail(id) {
     currentImageIndex = 0;
 
     return `
-        <section class="pt-24 pb-32 bg-white min-h-screen">
+        <section class="pt-24 pb-32 min-h-screen" style="background:#FAF7F2;">
             <div class="max-w-7xl mx-auto px-6">
 
                 <h1 class="mb-12">

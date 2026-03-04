@@ -4,7 +4,7 @@ export function renderHero() {
     const { about } = appData;
 
     return `
-        <section class="pt-24 pb-32 bg-white">
+        <section class="pt-24 pb-32" style="background:#FAF7F2;">
             <div class="max-w-7xl mx-auto px-6">
                 
                 <!-- HEADER -->

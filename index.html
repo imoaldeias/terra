@@ -12,11 +12,12 @@
 
     <script>
         tailwind.config = {
+            corePlugins: { preflight: false },
             theme: {
                 extend: {
                     colors: {
                         brand: {
-                            oliveLight: "#C9D2C2", 
+                            oliveLight: "#C9D2C2",
                             oliveDark: "#3E4A3F",
                             footerBrown: "#2C2A27",
                             terraLight: "#D6CFC2",
@@ -30,6 +31,65 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* NAV LINKS */
+        .nav-link {
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #3E4A3F;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 3px;
+            transition: opacity 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 1px;
+            background: #3E4A3F;
+            transition: width 0.35s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link:hover { opacity: 0.7; }
+
+        /* MOBILE NAV LINKS */
+        .mobile-nav-link {
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.78rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #3E4A3F;
+            text-decoration: none;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(62,74,63,0.1);
+            display: block;
+            transition: opacity 0.2s;
+        }
+        .mobile-nav-link:hover { opacity: 0.6; }
+
+        /* FOOTER LINKS */
+        .footer-link {
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(251,248,239,0.6);
+            text-decoration: none;
+            transition: color 0.25s ease;
+        }
+        .footer-link:hover { color: #FBF8EF; }
+
+        /* FOOTER TEXT */
+        .footer-text {
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(251,248,239,0.6);
+        }
+
+        /* NAVBAR SCROLL SHRINK */
+        #navbar.scrolled .micro-bar { display: none !important; }
+    </style>
 </head>
 
 <body class="bg-[#FBF8EF] text-black antialiased">
@@ -38,85 +98,62 @@
 HEADER
 ===================================================== -->
 
-<nav id="navbar"
-    class="fixed top-0 left-0 w-full z-50 
-           bg-brand-oliveLight 
-           border-b border-brand-oliveDark/5
-           h-20 sm:h-32 lg:h-40
-           flex items-center 
-           transition-all duration-500">
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full flex items-center justify-between">
+<!-- =====================================================
+NAVBAR
+===================================================== -->
 
-        <!-- LEFT BLOCK -->
-        <div class="flex items-center gap-6 sm:gap-8 lg:gap-10 cursor-pointer"
-             data-route="properties">
+<nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500"
+     style="background: rgba(201,210,194,0.97); border-bottom: 1px solid rgba(62,74,63,0.10);">
 
-            <img 
-                src="./logo.webp"
-                alt="TerraPrima"
-                width="220"
-                height="120"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-                class="h-10 sm:h-20 lg:h-28 w-auto object-contain">
+    <!-- MAIN NAV ROW -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 w-full flex items-center justify-between"
+         style="height: 96px;">
 
-            <div class="flex flex-col leading-none">
+        <!-- LOGO + WORDMARK -->
+        <div class="flex items-center gap-5 cursor-pointer" data-route="properties">
 
-                <span class="text-brand-oliveDark">
+            <img src="./logo.webp" alt="TerraPrima"
+                 loading="eager" fetchpriority="high" decoding="async"
+                 style="height:64px; width:auto; object-fit:contain;">
+
+            <div style="display:flex; flex-direction:column; line-height:1; gap:7px;">
+                <span id="brand-name" style="font-family:'Instrument Serif',serif; font-size:2rem; color:#2F3526; letter-spacing:0.02em; white-space:nowrap;">
                     TerraPrima
                 </span>
-
-                <span class="uppercase mt-2 sm:mt-3 lg:mt-4"
-                      style="color:#9C7A3C;">
+                <span id="brand-sub" style="font-family:'Instrument Sans',sans-serif; font-size:0.6rem; text-transform:uppercase; color:#9C7A3C; display:block; white-space:nowrap;">
                     Alentejo Heritage Estate
                 </span>
-
             </div>
 
         </div>
 
-        <!-- RIGHT BLOCK -->
-        <div class="flex items-center gap-4 sm:gap-5">
+        <!-- DESKTOP NAV LINKS -->
+        <div class="hidden lg:flex items-center" style="gap: 2.5rem;">
 
-            <!-- DESKTOP MENU -->
-            <a href="#properties" data-route="properties"
-                class="font-serif text-xl italic tracking-tight text-brand-oliveDark hover:opacity-60 transition-opacity">
-                Portfólio
-            </a>
+            <a href="#properties" data-route="properties" class="nav-link">Portfólio</a>
+            <a href="#sell" data-route="sell" class="nav-link">Venda</a>
+            <a href="#home" data-route="home" class="nav-link">Visão</a>
+            
+            <!-- DIVIDER -->
+            <div style="width:1px; height:18px; background:rgba(62,74,63,0.2);"></div>
 
-            <a href="#sell" data-route="sell"
-                class="font-serif text-xl italic tracking-tight text-brand-oliveDark hover:opacity-60 transition-opacity">
-                Venda
-            </a>
-
-            <a href="#home" data-route="home"
-                class="font-serif text-xl italic tracking-tight text-brand-oliveDark hover:opacity-60 transition-opacity">
-                Visão
-            </a>
-
-            </div>
-
-            <!-- FAVORITES -->
+            <!-- FAVOURITES -->
             <button id="fav-nav-btn"
-                class="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full hover:bg-white/40 text-brand-oliveDark border border-brand-oliveDark/10 transition-colors">
-                
-                <i data-lucide="heart" class="w-4 h-4"></i>
-                
-                <span id="fav-count" class="uppercase">
-                    0
-                </span>
-
-            </button>
-
-            <!-- MOBILE MENU BUTTON -->
-            <button id="mobile-menu-btn"
-                class="lg:hidden flex items-center justify-center w-10 h-10 text-brand-oliveDark">
-                <i id="mobile-menu-icon" data-lucide="menu" class="w-6 h-6"></i>
+                style="display:flex; align-items:center; gap:7px; font-family:'Instrument Sans',sans-serif; font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase; color:#3E4A3F; border:1px solid rgba(62,74,63,0.25); padding:7px 16px; background:transparent; cursor:pointer; transition: all 0.3s ease;"
+                onmouseover="this.style.background='rgba(62,74,63,0.08)'"
+                onmouseout="this.style.background='transparent'">
+                <i data-lucide="heart" style="width:13px; height:13px;"></i>
+                <span id="fav-count">0</span>
             </button>
 
         </div>
+
+        <!-- MOBILE MENU BUTTON -->
+        <button id="mobile-menu-btn"
+            class="lg:hidden"
+            style="color:#3E4A3F; background:none; border:none; cursor:pointer; padding:4px;">
+            <i id="mobile-menu-icon" data-lucide="menu" style="width:24px; height:24px;"></i>
+        </button>
 
     </div>
 </nav>
@@ -126,32 +163,24 @@ MOBILE MENU
 ===================================================== -->
 
 <div id="mobile-menu"
-    class="fixed top-24 sm:top-32 lg:top-40 left-0 w-full 
-           bg-brand-oliveLight 
-           border-b border-brand-oliveDark/5 
-           z-40 hidden">
+     class="hidden"
+     style="position:fixed; top:80px; left:0; width:100%; z-index:40;
+            background:rgba(201,210,194,0.99);
+            border-bottom: 1px solid rgba(62,74,63,0.12);
+            backdrop-filter: blur(8px);">
 
-    <div class="flex flex-col px-6 py-12 space-y-10">
+    <div style="display:flex; flex-direction:column; padding: 2rem 1.5rem 2.5rem; gap:0;">
 
-        <a href="#properties" data-route="properties"
-            class="text-brand-oliveDark uppercase">
-            Comprar
-        </a>
-
-        <a href="#sell" data-route="sell"
-            class="text-brand-oliveDark uppercase">
-            Vender
-        </a>
-
-        <a href="#home" data-route="home"
-            class="text-brand-oliveDark uppercase">
-            Sobre
-        </a>
-
-        <a href="#contact" data-route="contact"
-            class="text-brand-oliveDark uppercase">
-            Contacto
-        </a>
+        <a href="#properties" data-route="properties" class="mobile-nav-link">Portfólio</a>
+        <a href="#sell"       data-route="sell"        class="mobile-nav-link">Venda</a>
+        <a href="#home"       data-route="home"         class="mobile-nav-link">Visão</a>
+        
+        <!-- CONTACT INFO -->
+        <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(62,74,63,0.15);">
+            <p style="font-family:'Instrument Sans',sans-serif; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#9C7A3C; margin-bottom:0.75rem;">Contacto</p>
+            <p style="font-family:'Instrument Sans',sans-serif; font-size:0.85rem; color:#3E4A3F; margin-bottom:0.25rem;">+351 9XX XXX XXX</p>
+            <p style="font-family:'Instrument Sans',sans-serif; font-size:0.85rem; color:#3E4A3F;">geral@terraprima.pt</p>
+        </div>
 
     </div>
 </div>
@@ -160,76 +189,119 @@ MOBILE MENU
 APP ROOT
 ===================================================== -->
 
-<main id="app" class="pt-24 sm:pt-32 lg:pt-40"></main>
+<main id="app" style="padding-top: 100px;"></main>
 
 <!-- =====================================================
 FOOTER
 ===================================================== -->
 
-<footer class="bg-brand-footerBrown py-24 text-[#FBF8EF] [&_*]:text-[#FBF8EF]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+<!-- =====================================================
+FOOTER
+===================================================== -->
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 text-center md:text-left">
+<footer style="background:#2C2A27; color:#FBF8EF;">
 
-            <div class="space-y-4 md:col-span-2">
-                <p>
+    <!-- MAIN FOOTER BODY -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-10" style="padding-top:5rem; padding-bottom:4rem;">
+
+        <div style="display:grid; grid-template-columns:1fr; gap:3rem;">
+
+            <!-- TOP: LOGO AREA + TAGLINE -->
+            <div style="display:flex; flex-direction:column; align-items:center; text-align:center; padding-bottom:3rem; border-bottom:1px solid rgba(251,248,239,0.1);">
+
+                <img src="./logo.webp" alt="TerraPrima"
+                     style="height:72px; width:auto; object-fit:contain; opacity:0.85; filter:brightness(0) invert(1); margin-bottom:1.25rem;">
+
+                <p style="font-family:'Instrument Serif',serif; font-size:1.6rem; color:#FBF8EF; letter-spacing:0.02em; margin-bottom:0.5rem;">
                     TerraPrima
                 </p>
-
-                <p class="max-w-md">
+                <p style="font-family:'Instrument Sans',sans-serif; font-size:0.62rem; letter-spacing:0.3em; text-transform:uppercase; color:#9C7A3C; margin-bottom:1.5rem;">
+                    Alentejo Heritage Estate
+                </p>
+                <p style="font-family:'Instrument Sans',sans-serif; font-size:0.9rem; color:rgba(251,248,239,0.55); max-width:420px; line-height:1.7;">
                     Curadoria e mediação de propriedades rurais com valor patrimonial e visão de longo prazo no Alentejo.
                 </p>
+
             </div>
 
-            <div class="space-y-4 md:col-span-1">
-                <p>
-                    Navegação
-                </p>
+            <!-- BOTTOM GRID: NAV + CONTACT -->
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2rem;">
 
-                <div class="flex flex-col space-y-2">
-                    <a href="#properties" data-route="properties">Portfólio</a>
-                    <a href="#sell" data-route="sell">Venda</a>
-                    <a href="#home" data-route="home">Visão</a>
+                <!-- COL 1: PORTFÓLIO -->
+                <div>
+                    <p style="font-family:'Instrument Sans',sans-serif; font-size:0.62rem; letter-spacing:0.25em; text-transform:uppercase; color:#9C7A3C; margin-bottom:1.25rem;">
+                        Navegação
+                    </p>
+                    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                        <a href="#properties" data-route="properties" class="footer-link">Portfólio</a>
+                        <a href="#sell"       data-route="sell"        class="footer-link">Venda</a>
+                        <a href="#home"       data-route="home"        class="footer-link">Visão</a>
+                        
+                    </div>
                 </div>
-            </div>
 
-            <div class="md:col-span-1 pt-[1.75rem]">
-                <div class="flex flex-col space-y-2">
-                    <p>+351 9XX XXX XXX</p>
-                    <p>+351 9XX XXX XXX</p>
-                    <p>geral@terraprima.pt</p>
-                    <p>Alentejo, Portugal</p>
+                <!-- COL 2: CONTACTO -->
+                <div>
+                    <p style="font-family:'Instrument Sans',sans-serif; font-size:0.62rem; letter-spacing:0.25em; text-transform:uppercase; color:#9C7A3C; margin-bottom:1.25rem;">
+                        Contacto
+                    </p>
+                    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                        <span class="footer-text">+351 9XX XXX XXX</span>
+                        <span class="footer-text">+351 9XX XXX XXX</span>
+                        <span class="footer-text">geral@terraprima.pt</span>
+                    </div>
                 </div>
+
+                <!-- COL 3: LOCALIZAÇÃO -->
+                <div>
+                    <p style="font-family:'Instrument Sans',sans-serif; font-size:0.62rem; letter-spacing:0.25em; text-transform:uppercase; color:#9C7A3C; margin-bottom:1.25rem;">
+                        Localização
+                    </p>
+                    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                        <span class="footer-text">Alentejo</span>
+                        <span class="footer-text">Portugal</span>
+                    </div>
+                </div>
+
             </div>
 
-        </div>
-
-        <div class="mt-20 pt-8 border-t border-[#FBF8EF]/20 text-center">
-            © 2026 TerraPrima Heritage Estate
         </div>
 
     </div>
+
+    <!-- BOTTOM BAR -->
+    <div style="border-top:1px solid rgba(251,248,239,0.08); padding:1.25rem 0;">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10"
+             style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+            <span style="font-family:'Instrument Sans',sans-serif; font-size:0.68rem; letter-spacing:0.12em; color:rgba(251,248,239,0.3);">
+                © 2026 TerraPrima Heritage Estate
+            </span>
+            <span style="font-family:'Instrument Sans',sans-serif; font-size:0.68rem; letter-spacing:0.12em; color:rgba(251,248,239,0.3);">
+                AMI · Mediação Imobiliária
+            </span>
+        </div>
+    </div>
+
 </footer>
 
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script type="module" src="main.js"></script>
 
 <script>
-    const mobileBtn = document.getElementById("mobile-menu-btn");
+    const mobileBtn  = document.getElementById("mobile-menu-btn");
     const mobileMenu = document.getElementById("mobile-menu");
     const mobileIcon = document.getElementById("mobile-menu-icon");
 
     mobileBtn.addEventListener("click", () => {
         mobileMenu.classList.toggle("hidden");
-
         mobileIcon.setAttribute(
             "data-lucide",
             mobileMenu.classList.contains("hidden") ? "menu" : "x"
         );
-
         lucide.createIcons();
     });
 
-    document.querySelectorAll("#mobile-menu a").forEach(link => {
+    document.querySelectorAll(".mobile-nav-link").forEach(link => {
         link.addEventListener("click", () => {
             mobileMenu.classList.add("hidden");
             mobileIcon.setAttribute("data-lucide", "menu");
@@ -237,7 +309,33 @@ FOOTER
         });
     });
 
+    // Scroll shrink: hide micro bar, add shadow
+    window.addEventListener("scroll", () => {
+        const navbar = document.getElementById("navbar");
+        if (window.scrollY > 40) {
+            navbar.classList.add("scrolled");
+            navbar.style.boxShadow = "0 4px 24px -8px rgba(0,0,0,0.12)";
+        } else {
+            navbar.classList.remove("scrolled");
+            navbar.style.boxShadow = "none";
+        }
+    });
+
     lucide.createIcons();
+</script>
+
+<script>
+    function matchBrandWidth() {
+        const name = document.getElementById('brand-name');
+        const sub  = document.getElementById('brand-sub');
+        if (!name || !sub) return;
+        const targetWidth = name.getBoundingClientRect().width;
+        sub.style.width = targetWidth + 'px';
+        sub.style.display = 'flex';
+        sub.style.justifyContent = 'space-between';
+    }
+    document.fonts.ready.then(matchBrandWidth);
+    window.addEventListener('resize', matchBrandWidth);
 </script>
 
 </body>
