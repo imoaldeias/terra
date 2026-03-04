@@ -11,7 +11,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <script>
+    <script type="text/javascript">
         tailwind.config = {
             theme: {
                 extend: {
@@ -20,7 +20,8 @@
                             oliveLight: "#C9D2C2", 
                             oliveDark: "#3E4A3F",
                             footerBrown: "#2C2A27",
-                            terraLight: "#D6CFC2"
+                            terraLight: "#D6CFC2",
+                            bodyBeige: "#FBF8EF"
                         }
                     }
                 }
@@ -29,11 +30,11 @@
     </script>
 
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="bg-white text-black antialiased">
+<body class="bg-[#FBF8EF] text-black antialiased">
 
 <!-- =====================================================
 HEADER
@@ -182,64 +183,50 @@ APP ROOT
 FOOTER
 ===================================================== -->
 
-<footer class="bg-brand-footerBrown text-white py-24">
-    <div class="max-w-7xl mx-auto px-6">
-        
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-16">
-            
-            <div class="col-span-1 md:col-span-2">
-                <span class="font-serif font-light tracking-tight mb-8 block text-4xl">
-                    TerraPrima
-                </span>
+<footer class="bg-brand-footerBrown py-24 text-[#FBF8EF] [&_*]:text-[#FBF8EF]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
 
-                <p class="text-base font-light leading-relaxed text-brand-terraLight/80 max-w-sm">
-                    Mediação e gestão de ativos rurais com relevância patrimonial e viabilidade económica.
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 text-center md:text-left">
+
+            <!-- COLUMN 1 (span 2) -->
+            <div class="space-y-4 md:col-span-2">
+                <p class="text-base font-light leading-relaxed">
+                    TerraPrima
+                </p>
+
+                <p class="text-base font-light leading-relaxed max-w-md">
+                    Curadoria e mediação de propriedades rurais com valor patrimonial e visão de longo prazo no Alentejo.
                 </p>
             </div>
 
-            <div>
-                <h4 class="text-xs uppercase tracking-[0.25em] font-semibold text-white/40 mb-8">
+            <!-- COLUMN 2 -->
+            <div class="space-y-4 md:col-span-1">
+                <p class="text-base font-light leading-relaxed">
                     Navegação
-                </h4>
+                </p>
 
-                <div class="flex flex-col space-y-6 text-base font-light leading-relaxed">
-                    <a href="#properties" data-route="properties" class="hover:text-brand-oliveLight transition-colors">
-                        Portfólio
-                    </a>
-                    <a href="#sell" data-route="sell" class="hover:text-brand-oliveLight transition-colors">
-                        Venda
-                    </a>
-                    <a href="#home" data-route="home" class="hover:text-brand-oliveLight transition-colors">
-                        Visão
-                    </a>
-                    <a href="#contact" data-route="contact" class="hover:text-brand-oliveLight transition-colors">
-                        Contacto
-                    </a>
+                <div class="flex flex-col space-y-2 text-base font-light leading-relaxed">
+                    <a href="#properties" data-route="properties">Portfólio</a>
+                    <a href="#sell" data-route="sell">Venda</a>
+                    <a href="#home" data-route="home">Visão</a>
+                    <a href="#contact" data-route="contact">Contacto</a>
                 </div>
             </div>
 
-            <div>
-                <h4 class="text-xs uppercase tracking-[0.25em] font-semibold text-white/40 mb-8">
-                    Escritório
-                </h4>
-
-                <p class="text-base font-light leading-relaxed text-white">
-                    Reguengos de Monsaraz
-                </p>
-
-                <p class="text-xs uppercase tracking-[0.25em] font-semibold text-brand-terraLight/60 mt-3">
-                    Alentejo, Portugal
-                </p>
-
-                <p class="text-xs uppercase tracking-[0.25em] font-semibold mt-10 text-white/30">
-                    geral@terraprima.pt
-                </p>
+            <!-- COLUMN 3 -->
+            <div class="md:col-span-1 pt-[1.75rem]">
+                <div class="flex flex-col space-y-2 text-base font-light leading-relaxed">
+                    <p>+351 9XX XXX XXX</p>
+                    <p>+351 9XX XXX XXX</p>
+                    <p>geral@terraprima.pt</p>
+                    <p>Alentejo, Portugal</p>
+                </div>
             </div>
 
         </div>
 
-        <div class="mt-24 pt-8 border-t border-white/5 text-xs uppercase tracking-[0.25em] font-semibold text-white/20 text-center">
-            © 2026 TerraPrima Heritage Estate • Crafted for the Land
+        <div class="mt-20 pt-8 border-t border-[#FBF8EF]/20 text-base font-light leading-relaxed text-center">
+            © 2026 TerraPrima Heritage Estate
         </div>
 
     </div>
