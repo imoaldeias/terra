@@ -53,12 +53,7 @@ function normalizeProperty(p) {
         description: escapeHTML((p.description || '').trim()),
 
         priceValue: p.priceValue && p.priceValue.trim() !== ''
-            ? parseInt(
-                p.priceValue
-                    .replace(/\./g, '')
-                    .replace(/\s/g, '')
-                    .replace('€', '')
-            )
+            ? parseInt(p.priceValue.trim())
             : null,
 
         areaConstruida: toNumber(p.areaConstruida),
@@ -77,7 +72,7 @@ function normalizeProperty(p) {
 
 function parseCSV(text) {
     const rows = [];
-    const lines = text.trim().split('\n');
+    const lines = text.trim().split(/\r?\n/);
 
     // Properly handle quoted CSV
     const parseLine = (line) => {

@@ -206,24 +206,6 @@ FOOTER
 
         <div style="display:grid; grid-template-columns:1fr; gap:3rem;">
 
-            <!-- TOP: LOGO AREA + TAGLINE -->
-            <div style="display:flex; flex-direction:column; align-items:center; text-align:center; padding-bottom:3rem; border-bottom:1px solid rgba(251,248,239,0.1);">
-
-                <img src="./logo.webp" alt="TerraPrima"
-                     style="height:72px; width:auto; object-fit:contain; opacity:0.85; filter:brightness(0) invert(1); margin-bottom:1.25rem;">
-
-                <p style="font-family:'Instrument Serif',serif; font-size:1.6rem; color:#FBF8EF; letter-spacing:0.02em; margin-bottom:0.5rem;">
-                    TerraPrima
-                </p>
-                <p style="font-family:'Instrument Sans',sans-serif; font-size:0.62rem; letter-spacing:0.3em; text-transform:uppercase; color:#9C7A3C; margin-bottom:1.5rem;">
-                    Alentejo Heritage Estate
-                </p>
-                <p style="font-family:'Instrument Sans',sans-serif; font-size:0.9rem; color:rgba(251,248,239,0.55); max-width:420px; line-height:1.7;">
-                    Curadoria e mediação de propriedades rurais com valor patrimonial e visão de longo prazo no Alentejo.
-                </p>
-
-            </div>
-
             <!-- BOTTOM GRID: NAV + CONTACT -->
             <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2rem;">
 
@@ -336,6 +318,18 @@ FOOTER
     }
     document.fonts.ready.then(matchBrandWidth);
     window.addEventListener('resize', matchBrandWidth);
+</script>
+
+<script>
+    function highlightNav() {
+        const hash = window.location.hash.replace('#', '') || 'properties';
+        document.querySelectorAll('.nav-link').forEach(link => {
+            const route = link.getAttribute('data-route');
+            link.style.fontWeight = route === hash ? '600' : '400';
+        });
+    }
+    highlightNav();
+    window.addEventListener('hashchange', highlightNav);
 </script>
 
 </body>
