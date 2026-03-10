@@ -166,7 +166,7 @@ MOBILE MENU
 
 <div id="mobile-menu"
      class="hidden"
-     style="position:fixed; top:80px; left:0; width:100%; z-index:40;
+     style="position:fixed; top:136px; left:0; width:100%; z-index:40;
             background:rgba(201,210,194,0.99);
             border-bottom: 1px solid rgba(62,74,63,0.12);
             backdrop-filter: blur(8px);">
@@ -310,12 +310,14 @@ FOOTER
             if (logo)  logo.style.height  = '40px';
             if (brandName) brandName.style.fontSize = '1.3rem';
             if (brandSub)  brandSub.style.display   = 'none';
+            mobileMenu.style.top = '64px';
         } else {
             navbar.style.boxShadow = "none";
             if (inner) inner.style.height = '136px';
             if (logo)  logo.style.height  = '80px';
             if (brandName) brandName.style.fontSize = '2.6rem';
             if (brandSub)  brandSub.style.display   = 'flex';
+            mobileMenu.style.top = '136px';
         }
     });
     

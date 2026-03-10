@@ -1,9 +1,55 @@
 export function renderInvest() {
     return `
+        <style>
+            /* ── INVEST RESPONSIVE ── */
+            #invest-type-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0.5rem;
+            }
+            #invest-main-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+                align-items: start;
+            }
+            #invest-kpi-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+                margin-bottom: 1.25rem;
+            }
+            .invest-field-row {
+                display: grid;
+                grid-template-columns: 1fr 110px;
+                align-items: center;
+                gap: 1rem;
+                padding: 0.45rem 0;
+                border-bottom: 1px solid rgba(62,74,63,0.06);
+            }
+            @media (max-width: 768px) {
+                #invest-type-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                #invest-main-grid {
+                    grid-template-columns: 1fr;
+                }
+                .invest-field-row {
+                    grid-template-columns: 1fr 90px;
+                    gap: 0.5rem;
+                }
+            }
+            @media (max-width: 400px) {
+                #invest-type-grid {
+                    grid-template-columns: 1fr 1fr;
+                }
+            }
+        </style>
+
         <section class="pt-12 pb-24" style="background:#FAF7F2;">
             <div class="max-w-6xl mx-auto px-6">
 
-                <!-- HEADER — single column, each phrase on its own line -->
+                <!-- HEADER -->
                 <div style="margin-bottom:2rem;">
                     <span class="label mb-3 block">Ferramenta de Análise</span>
                     <h1 style="line-height:1.1;">Simulador de Investimento</h1>
@@ -12,30 +58,34 @@ export function renderInvest() {
                     </p>
                 </div>
 
-                <!-- TYPE SELECTOR — full width -->
+                <!-- TYPE SELECTOR -->
                 <div style="margin-bottom:1.25rem;">
-                    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0.5rem;" id="type-grid">
+                    <div id="invest-type-grid">
                         <button class="type-btn active" data-type="tourism"
-                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid #2F3526;background:#2F3526;color:#FAF7F2;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;">
-                            <i data-lucide="hotel" style="width:13px;height:13px;flex-shrink:0;"></i> Hotelaria e Turismo
+                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid #2F3526;background:#2F3526;color:#FAF7F2;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;">
+                            <i data-lucide="hotel" style="width:13px;height:13px;flex-shrink:0;"></i>
+                            <span>Hotelaria e Turismo</span>
                         </button>
                         <button class="type-btn" data-type="agriculture"
-                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid rgba(62,74,63,0.2);background:transparent;color:#2F3526;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;">
-                            <i data-lucide="leaf" style="width:13px;height:13px;flex-shrink:0;"></i> Agricultura
+                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid rgba(62,74,63,0.2);background:transparent;color:#2F3526;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;">
+                            <i data-lucide="leaf" style="width:13px;height:13px;flex-shrink:0;"></i>
+                            <span>Agricultura</span>
                         </button>
                         <button class="type-btn" data-type="energy"
-                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid rgba(62,74,63,0.2);background:transparent;color:#2F3526;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;">
-                            <i data-lucide="zap" style="width:13px;height:13px;flex-shrink:0;"></i> Energia
+                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid rgba(62,74,63,0.2);background:transparent;color:#2F3526;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;">
+                            <i data-lucide="zap" style="width:13px;height:13px;flex-shrink:0;"></i>
+                            <span>Energia</span>
                         </button>
                         <button class="type-btn" data-type="realestate"
-                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid rgba(62,74,63,0.2);background:transparent;color:#2F3526;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;">
-                            <i data-lucide="building-2" style="width:13px;height:13px;flex-shrink:0;"></i> Promoção Imobiliária
+                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid rgba(62,74,63,0.2);background:transparent;color:#2F3526;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;">
+                            <i data-lucide="building-2" style="width:13px;height:13px;flex-shrink:0;"></i>
+                            <span>Promoção Imobiliária</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- TWO COLUMNS: inputs left, results right -->
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;">
+                <!-- MAIN GRID: inputs + results -->
+                <div id="invest-main-grid">
 
                     <!-- LEFT: INPUTS -->
                     <div style="background:#fff;border:1px solid rgba(62,74,63,0.12);border-radius:4px;padding:1.5rem;">
@@ -49,7 +99,7 @@ export function renderInvest() {
                         <p style="font-family:'Instrument Sans',sans-serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#9C7A3C;margin-bottom:1rem;">Resultados</p>
 
                         <!-- 4 KPI CARDS -->
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.25rem;">
+                        <div id="invest-kpi-grid">
                             <div style="background:#EDE8E0;padding:1.25rem;border-radius:4px;">
                                 <p id="kpi1-label" style="font-family:'Instrument Sans',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:#9C7A3C;margin-bottom:0.4rem;">Receita Anual</p>
                                 <p id="kpi1-value" style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:#2F3526;margin:0;line-height:1;">—</p>
@@ -101,8 +151,6 @@ export function initInvest() {
 
     let currentType = 'tourism';
 
-    // ─── STYLES ─────────────────────────────────────────────────────────────
-
     const IS = `width:100%;border:none;border-bottom:1px solid rgba(62,74,63,0.2);background:transparent;padding:0.4rem 0;font-family:'Instrument Sans',sans-serif;font-size:0.9rem;color:#2F3526;outline:none;`;
     const LS = `font-family:'Instrument Sans',sans-serif;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:#9C7A3C;display:block;margin-bottom:0.3rem;`;
 
@@ -116,17 +164,15 @@ export function initInvest() {
         const live = opts.live
             ? `<span id="${opts.live}" style="font-family:'Instrument Sans',sans-serif;font-size:0.65rem;color:#9C7A3C;display:block;text-align:right;margin-top:0.1rem;min-height:0.8rem;"></span>`
             : '';
-        return `<div style="display:grid;grid-template-columns:1fr 110px;align-items:center;gap:1rem;padding:0.45rem 0;border-bottom:1px solid rgba(62,74,63,0.06);">
+        return `<div class="invest-field-row">
                     <label style="${LS};margin:0;">${label}${live}</label>
                     <input type="number" id="${id}" min="0"
                         ${opts.step ? `step="${opts.step}"` : ''}
                         ${opts.max  ? `max="${opts.max}"`   : ''}
                         value="${opts.value !== undefined ? opts.value : ''}"
-                        style="${IS};width:110px;text-align:right;">
+                        style="${IS};width:100%;text-align:right;">
                 </div>`;
     }
-
-    // ─── PREPOPULATED DEFAULTS ───────────────────────────────────────────────
 
     const defaults = {
         tourism: {
@@ -168,8 +214,6 @@ export function initInvest() {
             'inp-lterm':      3,
         },
     };
-
-    // ─── FORM TEMPLATES ──────────────────────────────────────────────────────
 
     function getForms(type) {
         const d = defaults[type];
@@ -229,14 +273,11 @@ export function initInvest() {
         return forms[type];
     }
 
-    // ─── RENDER FORM ─────────────────────────────────────────────────────────
-
     function renderForm(type) {
         const container = document.getElementById('form-fields');
         if (!container) return;
         container.innerHTML = getForms(type);
 
-        // Wire opex live preview for tourism
         if (type === 'tourism') {
             ['inp-rooms','inp-night','inp-occ','inp-opex'].forEach(id => {
                 document.getElementById(id)?.addEventListener('input', updateOpexLive);
@@ -244,16 +285,12 @@ export function initInvest() {
             updateOpexLive();
         }
 
-        // Wire auto-calculate on every input change
         container.querySelectorAll('input').forEach(inp => {
             inp.addEventListener('input', calculate);
         });
 
-        // Run immediately with defaults
         calculate();
     }
-
-    // ─── OPEX LIVE ───────────────────────────────────────────────────────────
 
     function updateOpexLive() {
         const rooms = parseFloat(document.getElementById('inp-rooms')?.value) || 0;
@@ -264,8 +301,6 @@ export function initInvest() {
         const el    = document.getElementById('opex-live');
         if (el) el.textContent = eur > 0 ? '≈ €' + Math.round(eur).toLocaleString('pt-PT') + ' /ano' : '';
     }
-
-    // ─── HELPERS ─────────────────────────────────────────────────────────────
 
     const ENERGY_OPEX_PER_MW = 20000;
 
@@ -306,8 +341,6 @@ export function initInvest() {
             document.getElementById(`kpi${n}-value`).textContent = k.value;
         });
     }
-
-    // ─── CALCULATE ───────────────────────────────────────────────────────────
 
     function calculate() {
         clearError();
@@ -392,8 +425,7 @@ export function initInvest() {
     }
 
     // ─── TYPE BUTTONS ────────────────────────────────────────────────────────
-
-    document.getElementById('type-grid')?.addEventListener('click', e => {
+    document.getElementById('invest-type-grid')?.addEventListener('click', e => {
         const btn = e.target.closest('.type-btn');
         if (!btn) return;
         currentType = btn.dataset.type;
@@ -406,7 +438,6 @@ export function initInvest() {
         btn.style.color       = '#FAF7F2';
         btn.style.borderColor = '#2F3526';
 
-        // Reset KPI labels for income types when switching away from realestate
         if (currentType !== 'realestate') {
             document.getElementById('kpi1-label').textContent = 'Receita Anual';
             document.getElementById('kpi2-label').textContent = 'Cash Flow Líquido /ano';
@@ -419,7 +450,6 @@ export function initInvest() {
     });
 
     // ─── LEAD BUTTON ─────────────────────────────────────────────────────────
-
     document.getElementById('btn-lead')?.addEventListener('click', () => {
         const name  = document.getElementById('lead-name')?.value?.trim();
         const email = document.getElementById('lead-email')?.value?.trim();
