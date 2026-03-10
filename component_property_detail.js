@@ -1,54 +1,5 @@
 import { appData } from './content_data.js';
 
-// Variáveis de estado da galeria
-let currentImageIndex = 0;
-let currentImages = [];
-let fullscreenListenerAdded = false;
-
-function escapeHTML(str) {
-    if (!str) return '';
-    return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-window.nextImage = function() {
-    if (!currentImages.length) return;
-    currentImageIndex = (currentImageIndex + 1) % currentImages.length;
-    updateImage();
-};
-
-window.prevImage = function() {
-    if (!currentImages.length) return;
-    currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
-    updateImage();
-};
-
-window.openLightbox = function () {
-    const lightbox = document.getElementById('lightbox');
-    const img = document.getElementById('lightbox-image');
-    if (lightbox && img) {
-        img.src = currentImages[currentImageIndex];
-        lightbox.style.display = 'flex';
-    }
-};
-
-window.closeLightbox = function () {
-    const lightbox = document.getElementById('lightbox');
-    if (lightbox) lightbox.style.display = 'none';
-};
-
-function updateImage() {
-    const img = document.getElementById('main-gallery-image');
-    if (img) img.src = currentImages[currentImageIndex];
-
-    const lightboxImg = document.getElementById('lightbox-image');
-    if (lightboxImg) lightboxImg.src = currentImages[currentImageIndex];
-}
-
 export function renderPropertyDetail(id) {
     const prop = appData.properties.find(p => p.id === parseInt(id));
 
@@ -60,15 +11,6 @@ export function renderPropertyDetail(id) {
         `;
     }
 
-    if (!fullscreenListenerAdded) {
-        document.addEventListener('fullscreenchange', () => {
-            const btn = document.getElementById('close-fullscreen-btn');
-            if (!btn) return;
-            btn.style.opacity = document.fullscreenElement ? '1' : '0';
-        });
-        fullscreenListenerAdded = true;
-    }
-
     const galleryImages = prop.gallery_ids
         ? prop.gallery_ids
             .replace(/\r/g, '')
@@ -78,8 +20,7 @@ export function renderPropertyDetail(id) {
             .filter(img => img.length > 5)
         : [];
 
-    currentImages = galleryImages.length > 0 ? galleryImages : [prop.image];
-    currentImageIndex = 0;
+    const images = galleryImages.length > 0 ? galleryImages : [prop.image];
 
     return `
         <section class="pt-24 pb-32 min-h-screen" style="background:#FAF7F2;">
@@ -99,48 +40,45 @@ export function renderPropertyDetail(id) {
 
                             <img
                                 id="main-gallery-image"
-                                src="${currentImages[0]}"
+                                src="${images[0]}"
                                 alt="${prop.title}"
                                 class="w-full h-full object-cover transition-all duration-500"
                                 style="cursor:zoom-in;"
-                                onclick="openLightbox()"
                             >
 
-                            ${currentImages.length > 1 ? `
-    <button onclick="prevImage()"
-        style="position:absolute; left:-3rem; top:50%; transform:translateY(-50%); background:none; border:none; color:#FAF7F2; font-size:2rem; cursor:pointer; opacity:0.6; transition:opacity 0.2s;"
-        onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-        ‹
-    </button>
-    <button onclick="nextImage()"
-        style="position:absolute; right:-3rem; top:50%; transform:translateY(-50%); background:none; border:none; color:#FAF7F2; font-size:2rem; cursor:pointer; opacity:0.6; transition:opacity 0.2s;"
-        onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-        ›
-    </button>
-` : ''}
+                            ${images.length > 1 ? `
+                                <button id="btn-prev"
+                                    style="position:absolute; left:1rem; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.3); border:none; color:#FAF7F2; font-size:2rem; cursor:pointer; opacity:0.8; transition:opacity 0.2s; width:2.5rem; height:2.5rem; border-radius:50%; display:flex; align-items:center; justify-content:center;"
+                                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+                                    ‹
+                                </button>
+                                <button id="btn-next"
+                                    style="position:absolute; right:1rem; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.3); border:none; color:#FAF7F2; font-size:2rem; cursor:pointer; opacity:0.8; transition:opacity 0.2s; width:2.5rem; height:2.5rem; border-radius:50%; display:flex; align-items:center; justify-content:center;"
+                                    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+                                    ›
+                                </button>
+                            ` : ''}
 
                         </div>
 
                         <!-- LIGHTBOX -->
                         <div id="lightbox"
-                            onclick="closeLightbox()"
                             style="display:none; position:fixed; inset:0; z-index:1000;
                                    background:rgba(20,20,18,0.92);
                                    align-items:center; justify-content:center;">
-                            
-                                   <div style="width:calc(100% - 8rem); height:calc(100% - 8rem); max-width:1200px; position:relative;"
-                                 onclick="event.stopPropagation()">
+
+                            <div style="width:calc(100% - 8rem); height:calc(100% - 8rem); max-width:1200px; position:relative;">
                                 <img id="lightbox-image"
-                                    src="${currentImages[0]}"
+                                    src="${images[0]}"
                                     style="width:100%; height:100%; object-fit:contain; border-radius:4px;">
 
-                                ${currentImages.length > 1 ? `
-                                    <button onclick="prevImage(); document.getElementById('lightbox-image').src = currentImages[currentImageIndex];"
+                                ${images.length > 1 ? `
+                                    <button id="lightbox-prev"
                                         style="position:absolute; left:-3rem; top:50%; transform:translateY(-50%); background:none; border:none; color:#FAF7F2; font-size:2rem; cursor:pointer; opacity:0.6; transition:opacity 0.2s;"
                                         onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
                                         ‹
                                     </button>
-                                    <button onclick="nextImage(); document.getElementById('lightbox-image').src = currentImages[currentImageIndex];"
+                                    <button id="lightbox-next"
                                         style="position:absolute; right:-3rem; top:50%; transform:translateY(-50%); background:none; border:none; color:#FAF7F2; font-size:2rem; cursor:pointer; opacity:0.6; transition:opacity 0.2s;"
                                         onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
                                         ›
@@ -197,15 +135,13 @@ export function renderPropertyDetail(id) {
                             ${prop.quartos > 0 ? `
                             <div>
                                 <div class="label">Quartos</div>
-                                <div>
-                                    ${prop.quartos === 1 ? '1 quarto' : `${prop.quartos} quartos`}
-                                </div>
+                                <div>${prop.quartos === 1 ? '1 quarto' : `${prop.quartos} quartos`}</div>
                             </div>
                             ` : ''}
 
                             <div class="pt-6 border-t border-gray-100">
                                 <button
-                                    data-route="contact"
+                                    data-route="sell"
                                     class="w-full border border-black py-4 hover:bg-black hover:text-white transition"
                                 >
                                     Solicitar Informações
@@ -220,8 +156,79 @@ export function renderPropertyDetail(id) {
                 <!-- /GRID -->
 
             </div>
-            <!-- /WRAPPER -->
-
         </section>
     `;
+}
+
+export function initPropertyDetail(id) {
+    const prop = appData.properties.find(p => p.id === parseInt(id));
+    if (!prop) return;
+
+    const galleryImages = prop.gallery_ids
+        ? prop.gallery_ids
+            .replace(/\r/g, '')
+            .replace(/\n/g, ',')
+            .split(',')
+            .map(img => img.trim())
+            .filter(img => img.length > 5)
+        : [];
+
+    const images = galleryImages.length > 0 ? galleryImages : [prop.image];
+    let currentIndex = 0;
+
+    // ── helpers ──────────────────────────────────────
+    function updateImage() {
+        const main     = document.getElementById('main-gallery-image');
+        const lightbox = document.getElementById('lightbox-image');
+        if (main)     main.src     = images[currentIndex];
+        if (lightbox) lightbox.src = images[currentIndex];
+    }
+
+    function openLightbox() {
+        const lb = document.getElementById('lightbox');
+        if (lb) lb.style.display = 'flex';
+    }
+
+    function closeLightbox() {
+        const lb = document.getElementById('lightbox');
+        if (lb) lb.style.display = 'none';
+    }
+
+    // ── main image click → open lightbox ─────────────
+    const mainImg = document.getElementById('main-gallery-image');
+    if (mainImg) mainImg.addEventListener('click', openLightbox);
+
+    // ── lightbox close on backdrop click ─────────────
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) lightbox.addEventListener('click', closeLightbox);
+
+    // ── gallery nav buttons ───────────────────────────
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+
+    if (btnPrev) btnPrev.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        updateImage();
+    });
+
+    if (btnNext) btnNext.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % images.length;
+        updateImage();
+    });
+
+    // ── lightbox nav buttons ──────────────────────────
+    const lbPrev = document.getElementById('lightbox-prev');
+    const lbNext = document.getElementById('lightbox-next');
+
+    if (lbPrev) lbPrev.addEventListener('click', e => {
+        e.stopPropagation();
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        updateImage();
+    });
+
+    if (lbNext) lbNext.addEventListener('click', e => {
+        e.stopPropagation();
+        currentIndex = (currentIndex + 1) % images.length;
+        updateImage();
+    });
 }

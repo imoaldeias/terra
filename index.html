@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TerraPrima — Alentejo Heritage Estate</title>
+    <title>TerraPrimus — Alentejo Heritage Estate</title>
 
     <!-- Google Fonts: Instrument Serif + Instrument Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,600;1,400&family=Instrument+Serif:italic@0;1&display=swap" rel="stylesheet">
@@ -30,6 +30,7 @@
     </script>
 
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.5/purify.min.js"></script>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* NAV LINKS */
@@ -103,7 +104,7 @@ NAVBAR
 ===================================================== -->
 
 <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500"
-     style="background: rgba(201,210,194,0.97); border-bottom: 1px solid rgba(62,74,63,0.10);">
+     style="background: rgb(201,210,194); border-bottom: 1px solid rgba(62,74,63,0.10);">
 
     <!-- MAIN NAV ROW -->
     <div class="mx-auto px-6 lg:px-10 lg:max-w-7xl w-full flex items-center justify-between"
@@ -112,13 +113,13 @@ NAVBAR
         <!-- LOGO + WORDMARK -->
         <div class="flex items-center gap-5 cursor-pointer" data-route="properties">
 
-            <img src="./logo.webp" alt="TerraPrima"
+            <img src="./logo.webp" alt="TerraPrimus"
                  loading="eager" fetchpriority="high" decoding="async"
                  style="height:80px; width:auto; object-fit:contain;">
 
             <div style="display:flex; flex-direction:column; line-height:1; gap:7px;">
                 <span id="brand-name" style="font-family:'Instrument Serif',serif; font-size:2.6rem; color:#2F3526; letter-spacing:0.02em; white-space:nowrap;">
-                    TerraPrima
+                    TerraPrimus
                 </span>
                 <span id="brand-sub" style="font-family:'Instrument Sans',sans-serif; font-size:0.6rem; text-transform:uppercase; color:#9C7A3C; display:block; white-space:nowrap;">
                     Alentejo Heritage Estate
@@ -131,7 +132,8 @@ NAVBAR
         <div class="hidden lg:flex items-center" style="gap: 2.5rem;">
 
             <a href="#properties" data-route="properties" class="nav-link">Portfólio</a>
-            <a href="#sell" data-route="sell" class="nav-link">Venda</a>
+            <a href="#invest" data-route="invest" class="nav-link">Investir</a>
+            <a href="#sell" data-route="sell" class="nav-link">Vender</a>
             <a href="#home" data-route="home" class="nav-link">Visão</a>
             
             <!-- DIVIDER -->
@@ -172,14 +174,15 @@ MOBILE MENU
     <div style="display:flex; flex-direction:column; padding: 2rem 1.5rem 2.5rem; gap:0;">
 
         <a href="#properties" data-route="properties" class="mobile-nav-link">Portfólio</a>
-        <a href="#sell"       data-route="sell"        class="mobile-nav-link">Venda</a>
+        <a href="#invest"     data-route="invest"       class="mobile-nav-link">Investimento</a>
+        <a href="#sell"       data-route="sell"         class="mobile-nav-link">Vender</a>
         <a href="#home"       data-route="home"         class="mobile-nav-link">Visão</a>
         
         <!-- CONTACT INFO -->
         <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(62,74,63,0.15);">
             <p style="font-family:'Instrument Sans',sans-serif; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#9C7A3C; margin-bottom:0.75rem;">Contacto</p>
             <p style="font-family:'Instrument Sans',sans-serif; font-size:0.85rem; color:#3E4A3F; margin-bottom:0.25rem;">+351 9XX XXX XXX</p>
-            <p style="font-family:'Instrument Sans',sans-serif; font-size:0.85rem; color:#3E4A3F;">geral@terraprima.pt</p>
+            <p style="font-family:'Instrument Sans',sans-serif; font-size:0.85rem; color:#3E4A3F;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a1c6c4d3c0cde1d5c4d3d3c0d1d3c8ccc08fd1d5">[email&#160;protected]</a></p>
         </div>
 
     </div>
@@ -199,7 +202,7 @@ FOOTER
 FOOTER
 ===================================================== -->
 
-<footer style="background:#2C2A27; color:#FBF8EF;">
+<footer style="background:#3D3632; color:#FBF8EF;">
 
     <!-- MAIN FOOTER BODY -->
     <div class="max-w-7xl mx-auto px-6 lg:px-10" style="padding-top:5rem; padding-bottom:4rem;">
@@ -216,7 +219,8 @@ FOOTER
                     </p>
                     <div style="display:flex; flex-direction:column; gap:0.75rem;">
                         <a href="#properties" data-route="properties" class="footer-link">Portfólio</a>
-                        <a href="#sell"       data-route="sell"        class="footer-link">Venda</a>
+                        <a href="#invest"     data-route="invest"      class="footer-link">Calcular Investimento</a>
+                        <a href="#sell"       data-route="sell"        class="footer-link">Vender</a>
                         <a href="#home"       data-route="home"        class="footer-link">Visão</a>
                         
                     </div>
@@ -230,7 +234,7 @@ FOOTER
                     <div style="display:flex; flex-direction:column; gap:0.75rem;">
                         <span class="footer-text">+351 9XX XXX XXX</span>
                         <span class="footer-text">+351 9XX XXX XXX</span>
-                        <span class="footer-text">geral@terraprima.pt</span>
+                        <span class="footer-text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="10777562717c5064756262716062797d713e6064">[email&#160;protected]</a></span>
                     </div>
                 </div>
 
@@ -256,7 +260,7 @@ FOOTER
         <div class="max-w-7xl mx-auto px-6 lg:px-10"
              style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
             <span style="font-family:'Instrument Sans',sans-serif; font-size:0.68rem; letter-spacing:0.12em; color:rgba(251,248,239,0.3);">
-                © 2026 TerraPrima Heritage Estate
+                © 2026 TerraPrimus Heritage Estate
             </span>
             <span style="font-family:'Instrument Sans',sans-serif; font-size:0.68rem; letter-spacing:0.12em; color:rgba(251,248,239,0.3);">
                 AMI · Mediação Imobiliária
@@ -266,7 +270,7 @@ FOOTER
 
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script type="module" src="main.js"></script>
 
 <script>
@@ -295,17 +299,26 @@ FOOTER
 
     window.addEventListener("scroll", () => {
         const navbar = document.getElementById("navbar");
-        const inner = navbar.querySelector('.max-w-7xl');
+        const inner  = navbar.querySelector('.max-w-7xl, .mx-auto');
+        const logo   = navbar.querySelector('img');
+        const brandName = document.getElementById('brand-name');
+        const brandSub  = document.getElementById('brand-sub');
+
         if (window.scrollY > 40) {
             navbar.style.boxShadow = "0 4px 24px -8px rgba(0,0,0,0.12)";
-            inner.style.height = "72px";
-            inner.style.transition = "height 0.4s ease";
+            if (inner) inner.style.height = '64px';
+            if (logo)  logo.style.height  = '40px';
+            if (brandName) brandName.style.fontSize = '1.3rem';
+            if (brandSub)  brandSub.style.display   = 'none';
         } else {
             navbar.style.boxShadow = "none";
-            inner.style.height = "136px";
-            inner.style.transition = "height 0.4s ease";
+            if (inner) inner.style.height = '136px';
+            if (logo)  logo.style.height  = '80px';
+            if (brandName) brandName.style.fontSize = '2.6rem';
+            if (brandSub)  brandSub.style.display   = 'flex';
         }
     });
+    
 </script>
 
 <script>
@@ -324,15 +337,4 @@ FOOTER
 
 <script>
     function highlightNav() {
-        const hash = window.location.hash.replace('#', '') || 'properties';
-        document.querySelectorAll('.nav-link').forEach(link => {
-            const route = link.getAttribute('data-route');
-            link.style.fontWeight = route === hash ? '600' : '400';
-        });
-    }
-    highlightNav();
-    window.addEventListener('hashchange', highlightNav);
-</script>
-
-</body>
-</html>
+        const hash = window.location.

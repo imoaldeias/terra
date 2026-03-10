@@ -1,0 +1,444 @@
+export function renderInvest() {
+    return `
+        <section class="pt-12 pb-24" style="background:#FAF7F2;">
+            <div class="max-w-6xl mx-auto px-6">
+
+                <!-- HEADER — single column, each phrase on its own line -->
+                <div style="margin-bottom:2rem;">
+                    <span class="label mb-3 block">Ferramenta de Análise</span>
+                    <h1 style="line-height:1.1;">Simulador de Investimento</h1>
+                    <p style="margin-top:0.5rem; color:#6b7a5e; font-size:0.88rem; line-height:1.5;">
+                        Introduza os dados do seu projeto e obtenha os indicadores financeiros essenciais.
+                    </p>
+                </div>
+
+                <!-- TYPE SELECTOR — full width -->
+                <div style="margin-bottom:1.25rem;">
+                    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0.5rem;" id="type-grid">
+                        <button class="type-btn active" data-type="tourism"
+                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid #2F3526;background:#2F3526;color:#FAF7F2;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;">
+                            <i data-lucide="hotel" style="width:13px;height:13px;flex-shrink:0;"></i> Hotelaria e Turismo
+                        </button>
+                        <button class="type-btn" data-type="agriculture"
+                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid rgba(62,74,63,0.2);background:transparent;color:#2F3526;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;">
+                            <i data-lucide="leaf" style="width:13px;height:13px;flex-shrink:0;"></i> Agricultura
+                        </button>
+                        <button class="type-btn" data-type="energy"
+                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid rgba(62,74,63,0.2);background:transparent;color:#2F3526;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;">
+                            <i data-lucide="zap" style="width:13px;height:13px;flex-shrink:0;"></i> Energia
+                        </button>
+                        <button class="type-btn" data-type="realestate"
+                            style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid rgba(62,74,63,0.2);background:transparent;color:#2F3526;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;">
+                            <i data-lucide="building-2" style="width:13px;height:13px;flex-shrink:0;"></i> Promoção Imobiliária
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TWO COLUMNS: inputs left, results right -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;">
+
+                    <!-- LEFT: INPUTS -->
+                    <div style="background:#fff;border:1px solid rgba(62,74,63,0.12);border-radius:4px;padding:1.5rem;">
+                        <div id="form-fields" style="display:flex;flex-direction:column;gap:0;"></div>
+                        <p id="calc-error" style="display:none;font-family:'Instrument Sans',sans-serif;font-size:0.75rem;color:#c0392b;margin-top:0.75rem;text-align:center;"></p>
+                    </div>
+
+                    <!-- RIGHT: RESULTS -->
+                    <div style="background:#fff;border:1px solid rgba(62,74,63,0.12);border-radius:4px;padding:1.5rem;">
+
+                        <p style="font-family:'Instrument Sans',sans-serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#9C7A3C;margin-bottom:1rem;">Resultados</p>
+
+                        <!-- 4 KPI CARDS -->
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.25rem;">
+                            <div style="background:#EDE8E0;padding:1.25rem;border-radius:4px;">
+                                <p id="kpi1-label" style="font-family:'Instrument Sans',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:#9C7A3C;margin-bottom:0.4rem;">Receita Anual</p>
+                                <p id="kpi1-value" style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:#2F3526;margin:0;line-height:1;">—</p>
+                            </div>
+                            <div style="background:#EDE8E0;padding:1.25rem;border-radius:4px;">
+                                <p id="kpi2-label" style="font-family:'Instrument Sans',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:#9C7A3C;margin-bottom:0.4rem;">Cash Flow Líquido /ano</p>
+                                <p id="kpi2-value" style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:#2F3526;margin:0;line-height:1;">—</p>
+                            </div>
+                            <div style="background:#2F3526;padding:1.25rem;border-radius:4px;">
+                                <p id="kpi3-label" style="font-family:'Instrument Sans',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:#9C7A3C;margin-bottom:0.4rem;">Rentabilidade do Capital</p>
+                                <p id="kpi3-value" style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:#FAF7F2;margin:0;line-height:1;">—</p>
+                            </div>
+                            <div style="background:#2F3526;padding:1.25rem;border-radius:4px;">
+                                <p id="kpi4-label" style="font-family:'Instrument Sans',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:#9C7A3C;margin-bottom:0.4rem;">Payback</p>
+                                <p id="kpi4-value" style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:#FAF7F2;margin:0;line-height:1;">—</p>
+                            </div>
+                        </div>
+
+                        <!-- DISCLAIMER -->
+                        <p style="font-family:'Instrument Sans',sans-serif;font-size:0.68rem;color:#9b9b8a;line-height:1.6;margin-bottom:1.25rem;">
+                            Estimativas indicativas baseadas nos dados introduzidos. Não constituem garantia de rendimento.
+                        </p>
+
+                        <!-- LEAD FORM -->
+                        <div style="border-top:1px solid rgba(62,74,63,0.1);padding-top:1.25rem;">
+                            <p style="font-family:'Instrument Sans',sans-serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#9C7A3C;margin-bottom:0.3rem;">Análise Personalizada</p>
+                            <p style="font-family:'Instrument Sans',sans-serif;font-size:0.8rem;color:#6b7a5e;margin-bottom:1rem;line-height:1.5;">Quer um estudo de viabilidade detalhado, sem compromisso?</p>
+                            <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                                <input type="text" id="lead-name" placeholder="Nome"
+                                    style="border:none;border-bottom:1px solid rgba(62,74,63,0.2);background:transparent;padding:0.4rem 0;font-family:'Instrument Sans',sans-serif;font-size:0.85rem;color:#2F3526;outline:none;">
+                                <input type="email" id="lead-email" placeholder="Email"
+                                    style="border:none;border-bottom:1px solid rgba(62,74,63,0.2);background:transparent;padding:0.4rem 0;font-family:'Instrument Sans',sans-serif;font-size:0.85rem;color:#2F3526;outline:none;">
+                                <button id="btn-lead"
+                                    style="width:100%;margin-top:0.25rem;padding:0.7rem;border:1px solid #9C7A3C;background:transparent;color:#9C7A3C;cursor:pointer;font-family:'Instrument Sans',sans-serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;border-radius:4px;transition:all 0.3s;">
+                                    Solicitar Análise
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    `;
+}
+
+export function initInvest() {
+
+    let currentType = 'tourism';
+
+    // ─── STYLES ─────────────────────────────────────────────────────────────
+
+    const IS = `width:100%;border:none;border-bottom:1px solid rgba(62,74,63,0.2);background:transparent;padding:0.4rem 0;font-family:'Instrument Sans',sans-serif;font-size:0.9rem;color:#2F3526;outline:none;`;
+    const LS = `font-family:'Instrument Sans',sans-serif;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:#9C7A3C;display:block;margin-bottom:0.3rem;`;
+
+    function sectionHTML(title) {
+        return `<div style="padding-top:1.1rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(62,74,63,0.1);margin-bottom:0.1rem;">
+                    <p style="font-family:'Instrument Sans',sans-serif;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#2F3526;margin:0;">${title}</p>
+                </div>`;
+    }
+
+    function fieldHTML(id, label, opts = {}) {
+        const live = opts.live
+            ? `<span id="${opts.live}" style="font-family:'Instrument Sans',sans-serif;font-size:0.65rem;color:#9C7A3C;display:block;text-align:right;margin-top:0.1rem;min-height:0.8rem;"></span>`
+            : '';
+        return `<div style="display:grid;grid-template-columns:1fr 110px;align-items:center;gap:1rem;padding:0.45rem 0;border-bottom:1px solid rgba(62,74,63,0.06);">
+                    <label style="${LS};margin:0;">${label}${live}</label>
+                    <input type="number" id="${id}" min="0"
+                        ${opts.step ? `step="${opts.step}"` : ''}
+                        ${opts.max  ? `max="${opts.max}"`   : ''}
+                        value="${opts.value !== undefined ? opts.value : ''}"
+                        style="${IS};width:110px;text-align:right;">
+                </div>`;
+    }
+
+    // ─── PREPOPULATED DEFAULTS ───────────────────────────────────────────────
+
+    const defaults = {
+        tourism: {
+            'inp-investment': 2000000,
+            'inp-rooms':      12,
+            'inp-night':      150,
+            'inp-occ':        65,
+            'inp-opex':       45,
+            'inp-loan':       60,
+            'inp-rate':       4,
+            'inp-lterm':      15,
+        },
+        agriculture: {
+            'inp-investment': 800000,
+            'inp-land':       120,
+            'inp-rev-ha':     1200,
+            'inp-cost-ha':    400,
+            'inp-subsidy':    18000,
+            'inp-loan':       50,
+            'inp-rate':       3.5,
+            'inp-lterm':      12,
+        },
+        energy: {
+            'inp-investment': 3000000,
+            'inp-mw':         2,
+            'inp-hours':      1800,
+            'inp-kwh':        0.065,
+            'inp-loan':       70,
+            'inp-rate':       3.5,
+            'inp-lterm':      20,
+        },
+        realestate: {
+            'inp-investment': 1500000,
+            'inp-buildarea':  2000,
+            'inp-saleprice':  2500,
+            'inp-buildtime':  3,
+            'inp-loan':       65,
+            'inp-rate':       4.5,
+            'inp-lterm':      3,
+        },
+    };
+
+    // ─── FORM TEMPLATES ──────────────────────────────────────────────────────
+
+    function getForms(type) {
+        const d = defaults[type];
+        const v = (id) => ({ value: d[id] });
+        const forms = {
+            tourism: `
+                ${sectionHTML('Investimento')}
+                ${fieldHTML('inp-investment', 'Investimento Total (€)',              { ...v('inp-investment') })}
+                ${sectionHTML('Operação')}
+                ${fieldHTML('inp-rooms',  'Número de Quartos',                       { ...v('inp-rooms') })}
+                ${fieldHTML('inp-night',  'Preço Médio / Noite (€)',                 { ...v('inp-night') })}
+                ${fieldHTML('inp-occ',    'Taxa de Ocupação (%)',   { max:100,        ...v('inp-occ') })}
+                ${fieldHTML('inp-opex',   'Custos Operacionais (% da receita)', { max:100, live:'opex-live', ...v('inp-opex') })}
+                ${sectionHTML('Financiamento')}
+                ${fieldHTML('inp-loan',   'Financiamento Bancário (%)', { max:95,     ...v('inp-loan') })}
+                ${fieldHTML('inp-rate',   'Taxa de Juro (%)',       { step:'0.1',     ...v('inp-rate') })}
+                ${fieldHTML('inp-lterm',  'Prazo do Empréstimo (anos)',               { ...v('inp-lterm') })}
+            `,
+            agriculture: `
+                ${sectionHTML('Investimento')}
+                ${fieldHTML('inp-investment', 'Investimento Total (€)',              { ...v('inp-investment') })}
+                ${fieldHTML('inp-land',       'Área do Terreno (ha)',                { ...v('inp-land') })}
+                ${sectionHTML('Rentabilidade')}
+                ${fieldHTML('inp-rev-ha',  'Receita por Hectare (€/ha/ano)',         { ...v('inp-rev-ha') })}
+                ${fieldHTML('inp-cost-ha', 'Custos por Hectare (€/ha/ano)',          { ...v('inp-cost-ha') })}
+                ${fieldHTML('inp-subsidy', 'Subsídios Anuais (€)',                   { ...v('inp-subsidy') })}
+                ${sectionHTML('Financiamento')}
+                ${fieldHTML('inp-loan',  'Financiamento Bancário (%)', { max:95,     ...v('inp-loan') })}
+                ${fieldHTML('inp-rate',  'Taxa de Juro (%)',       { step:'0.1',     ...v('inp-rate') })}
+                ${fieldHTML('inp-lterm', 'Prazo do Empréstimo (anos)',               { ...v('inp-lterm') })}
+            `,
+            energy: `
+                ${sectionHTML('Investimento')}
+                ${fieldHTML('inp-investment', 'Investimento Total (€)',              { ...v('inp-investment') })}
+                ${sectionHTML('Produção')}
+                ${fieldHTML('inp-mw',    'Potência Instalada (MW)',  { step:'0.1',   ...v('inp-mw') })}
+                ${fieldHTML('inp-hours', 'Horas de Produção / Ano',                  { ...v('inp-hours') })}
+                ${fieldHTML('inp-kwh',   'Preço de Venda (€/kWh)',  { step:'0.001', ...v('inp-kwh') })}
+                ${sectionHTML('Financiamento')}
+                ${fieldHTML('inp-loan',  'Financiamento Bancário (%)', { max:95,     ...v('inp-loan') })}
+                ${fieldHTML('inp-rate',  'Taxa de Juro (%)',       { step:'0.1',     ...v('inp-rate') })}
+                ${fieldHTML('inp-lterm', 'Prazo do Empréstimo (anos)',               { ...v('inp-lterm') })}
+            `,
+            realestate: `
+                ${sectionHTML('Investimento')}
+                ${fieldHTML('inp-investment', 'Investimento Total (€)',              { ...v('inp-investment') })}
+                ${sectionHTML('Desenvolvimento')}
+                ${fieldHTML('inp-buildarea',  'Área Construível (m²)',               { ...v('inp-buildarea') })}
+                ${fieldHTML('inp-saleprice',  'Preço de Venda (€/m²)',               { ...v('inp-saleprice') })}
+                ${fieldHTML('inp-buildtime',  'Prazo de Construção (anos)',           { ...v('inp-buildtime') })}
+                ${sectionHTML('Financiamento')}
+                ${fieldHTML('inp-loan',  'Financiamento Bancário (%)', { max:95,     ...v('inp-loan') })}
+                ${fieldHTML('inp-rate',  'Taxa de Juro (%)',       { step:'0.1',     ...v('inp-rate') })}
+                ${fieldHTML('inp-lterm', 'Prazo do Empréstimo (anos)',               { ...v('inp-lterm') })}
+            `,
+        };
+        return forms[type];
+    }
+
+    // ─── RENDER FORM ─────────────────────────────────────────────────────────
+
+    function renderForm(type) {
+        const container = document.getElementById('form-fields');
+        if (!container) return;
+        container.innerHTML = getForms(type);
+
+        // Wire opex live preview for tourism
+        if (type === 'tourism') {
+            ['inp-rooms','inp-night','inp-occ','inp-opex'].forEach(id => {
+                document.getElementById(id)?.addEventListener('input', updateOpexLive);
+            });
+            updateOpexLive();
+        }
+
+        // Wire auto-calculate on every input change
+        container.querySelectorAll('input').forEach(inp => {
+            inp.addEventListener('input', calculate);
+        });
+
+        // Run immediately with defaults
+        calculate();
+    }
+
+    // ─── OPEX LIVE ───────────────────────────────────────────────────────────
+
+    function updateOpexLive() {
+        const rooms = parseFloat(document.getElementById('inp-rooms')?.value) || 0;
+        const night = parseFloat(document.getElementById('inp-night')?.value) || 0;
+        const occ   = parseFloat(document.getElementById('inp-occ')?.value)   / 100 || 0;
+        const opex  = parseFloat(document.getElementById('inp-opex')?.value)  / 100 || 0;
+        const eur   = rooms * night * 365 * occ * opex;
+        const el    = document.getElementById('opex-live');
+        if (el) el.textContent = eur > 0 ? '≈ €' + Math.round(eur).toLocaleString('pt-PT') + ' /ano' : '';
+    }
+
+    // ─── HELPERS ─────────────────────────────────────────────────────────────
+
+    const ENERGY_OPEX_PER_MW = 20000;
+
+    function g(id) { return parseFloat(document.getElementById(id)?.value) || 0; }
+
+    function fmt(n) {
+        const abs = Math.abs(n), sign = n < 0 ? '-' : '';
+        if (abs >= 1000000) return sign + '€' + (abs/1000000).toFixed(2) + 'M';
+        if (abs >= 1000)    return sign + '€' + Math.round(abs/1000) + 'k';
+        return sign + '€' + Math.round(abs);
+    }
+
+    function fmtPct(n)   { return n.toFixed(1) + '%'; }
+    function fmtYears(n) { return n < 1 ? '< 1 ano' : n > 40 ? '> 40 anos' : Math.ceil(n) + ' anos'; }
+
+    function debtService(loan, annualRate, years) {
+        if (!loan || !annualRate || !years) return 0;
+        const r = annualRate / 12, n = years * 12;
+        return loan * (r * Math.pow(1+r,n)) / (Math.pow(1+r,n)-1) * 12;
+    }
+
+    function showError(msg) {
+        const el = document.getElementById('calc-error');
+        if (!el) return;
+        el.textContent = msg;
+        el.style.display = 'block';
+    }
+
+    function clearError() {
+        const el = document.getElementById('calc-error');
+        if (el) el.style.display = 'none';
+    }
+
+    function setKPIs(kpis) {
+        kpis.forEach((k, i) => {
+            const n = i + 1;
+            if (k.label) document.getElementById(`kpi${n}-label`).textContent = k.label;
+            document.getElementById(`kpi${n}-value`).textContent = k.value;
+        });
+    }
+
+    // ─── CALCULATE ───────────────────────────────────────────────────────────
+
+    function calculate() {
+        clearError();
+
+        const investment = g('inp-investment');
+        const loanPct    = g('inp-loan') / 100;
+        const rate       = g('inp-rate') / 100;
+        const lterm      = g('inp-lterm');
+
+        if (!investment) return;
+
+        const loanAmt = investment * loanPct;
+        const equity  = investment - loanAmt;
+        if (equity <= 0) return showError('O financiamento bancário não pode ser 100%.');
+        const ds = debtService(loanAmt, rate, lterm);
+
+        if (currentType === 'tourism') {
+            const rooms   = g('inp-rooms');
+            const night   = g('inp-night');
+            const occ     = g('inp-occ') / 100;
+            const opexPct = g('inp-opex') / 100;
+            if (!rooms || !night || !occ) return;
+            const revenue  = rooms * night * 365 * occ;
+            const cashflow = revenue * (1 - opexPct) - ds;
+            const roe      = (cashflow / equity) * 100;
+            const payback  = cashflow > 0 ? equity / cashflow : Infinity;
+            setKPIs([
+                { value: fmt(revenue)      },
+                { value: fmt(cashflow)     },
+                { value: fmtPct(roe)       },
+                { value: fmtYears(payback) },
+            ]);
+
+        } else if (currentType === 'agriculture') {
+            const land    = g('inp-land');
+            const revHa   = g('inp-rev-ha');
+            const costHa  = g('inp-cost-ha');
+            const subsidy = g('inp-subsidy');
+            if (!land || !revHa) return;
+            const revenue  = land * revHa + subsidy;
+            const cashflow = (revenue - land * costHa) - ds;
+            const roe      = (cashflow / equity) * 100;
+            const payback  = cashflow > 0 ? equity / cashflow : Infinity;
+            setKPIs([
+                { value: fmt(revenue)      },
+                { value: fmt(cashflow)     },
+                { value: fmtPct(roe)       },
+                { value: fmtYears(payback) },
+            ]);
+
+        } else if (currentType === 'energy') {
+            const mw    = g('inp-mw');
+            const hours = g('inp-hours');
+            const kwh   = g('inp-kwh');
+            if (!mw || !hours || !kwh) return;
+            const revenue  = mw * 1000 * hours * kwh;
+            const cashflow = (revenue - mw * ENERGY_OPEX_PER_MW) - ds;
+            const roe      = (cashflow / equity) * 100;
+            const payback  = cashflow > 0 ? equity / cashflow : Infinity;
+            setKPIs([
+                { value: fmt(revenue)      },
+                { value: fmt(cashflow)     },
+                { value: fmtPct(roe)       },
+                { value: fmtYears(payback) },
+            ]);
+
+        } else if (currentType === 'realestate') {
+            const buildarea = g('inp-buildarea');
+            const saleprice = g('inp-saleprice');
+            const buildtime = g('inp-buildtime') || 2;
+            if (!buildarea || !saleprice) return;
+            const gdv    = buildarea * saleprice;
+            const profit = gdv - investment - debtService(loanAmt, rate, buildtime) * buildtime;
+            const roe    = (profit / equity) * 100;
+            setKPIs([
+                { label: 'Valor de Venda Total',             value: fmt(gdv)    },
+                { label: 'Lucro do Projeto',                 value: fmt(profit) },
+                { label: 'Rentabilidade do Capital Próprio', value: fmtPct(roe) },
+                { label: 'Prazo de Retorno',                 value: buildtime + (buildtime === 1 ? ' ano' : ' anos') },
+            ]);
+        }
+    }
+
+    // ─── TYPE BUTTONS ────────────────────────────────────────────────────────
+
+    document.getElementById('type-grid')?.addEventListener('click', e => {
+        const btn = e.target.closest('.type-btn');
+        if (!btn) return;
+        currentType = btn.dataset.type;
+        document.querySelectorAll('.type-btn').forEach(b => {
+            b.style.background  = 'transparent';
+            b.style.color       = '#2F3526';
+            b.style.borderColor = 'rgba(62,74,63,0.2)';
+        });
+        btn.style.background  = '#2F3526';
+        btn.style.color       = '#FAF7F2';
+        btn.style.borderColor = '#2F3526';
+
+        // Reset KPI labels for income types when switching away from realestate
+        if (currentType !== 'realestate') {
+            document.getElementById('kpi1-label').textContent = 'Receita Anual';
+            document.getElementById('kpi2-label').textContent = 'Cash Flow Líquido /ano';
+            document.getElementById('kpi3-label').textContent = 'Rentabilidade do Capital';
+            document.getElementById('kpi4-label').textContent = 'Payback';
+        }
+
+        renderForm(currentType);
+        if (window.lucide) lucide.createIcons();
+    });
+
+    // ─── LEAD BUTTON ─────────────────────────────────────────────────────────
+
+    document.getElementById('btn-lead')?.addEventListener('click', () => {
+        const name  = document.getElementById('lead-name')?.value?.trim();
+        const email = document.getElementById('lead-email')?.value?.trim();
+        if (!name || !email) return;
+        const btn = document.getElementById('btn-lead');
+        btn.textContent = '✓ Pedido enviado';
+        btn.style.color = '#2F3526';
+        btn.style.borderColor = '#2F3526';
+        btn.disabled = true;
+    });
+
+    document.getElementById('btn-lead')?.addEventListener('mouseover', e => {
+        if (!e.target.disabled) { e.target.style.background = '#9C7A3C'; e.target.style.color = '#FAF7F2'; }
+    });
+    document.getElementById('btn-lead')?.addEventListener('mouseout', e => {
+        if (!e.target.disabled) { e.target.style.background = 'transparent'; e.target.style.color = '#9C7A3C'; }
+    });
+
+    // ─── INIT ─────────────────────────────────────────────────────────────────
+    renderForm('tourism');
+    if (window.lucide) lucide.createIcons();
+}

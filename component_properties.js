@@ -221,3 +221,19 @@ function renderSelect(id, label, options) {
         </div>
     `;
 }
+
+/* =====================================================
+   INIT — wires up filters after render
+===================================================== */
+
+import { applyFilters } from './filters.js';
+
+export function initProperties() {
+    // Attach change listeners to filter selects
+    document.querySelectorAll('#filters-bar select').forEach(sel => {
+        sel.addEventListener('change', applyFilters);
+    });
+
+    // Render the initial unfiltered list
+    applyFilters();
+}

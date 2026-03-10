@@ -5,7 +5,7 @@
 export let appData = {
     properties: [],
     about: {
-        title: "TerraPrima Alentejo Heritage Estate",
+        title: "TerraPrimus Alentejo Heritage Estate",
         subtitle: "Representação e Gestão de Ativos Rurais",
         description: "Estrutura especializada na gestão e valorização de património rural.",
         values: ["Confidencialidade", "Rigor", "Visão de Longo Prazo"]
@@ -129,7 +129,7 @@ export async function loadSiteData() {
 
         const cleanData = rawData
             .map(normalizeProperty)
-            .filter(p => p.id !== 0);
+            .filter(p => p.id !== 0 && p.title.trim() !== '' && p.location.trim() !== '');
 
         appData.properties = cleanData;
 

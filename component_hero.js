@@ -6,69 +6,45 @@ export function renderHero() {
     return `
         <section class="pt-24 pb-32" style="background:#FAF7F2;">
             <div class="max-w-7xl mx-auto px-6">
-                
+
                 <!-- HEADER -->
                 <div class="text-center mb-20">
-
-                    <span class="label mb-10 block">
-                        A Nossa Visão
-                    </span>
-
-                    <h1>
-                        Especialistas em ativos rurais
-                    </h1>
-
+                    <span class="label mb-10 block">A Nossa Visão</span>
+                    <h1>Investimento inteligente</h1>
                 </div>
 
-                <!-- TEXT CONTENT -->
+                <!-- MAIN CONTENT -->
                 <div class="max-w-3xl mx-auto">
 
-                    <p style="line-height:1.8; color:#2F3526; margin-bottom:1.5rem;">
-                        A TerraPrima nasce de uma premissa simples: a terra não é apenas um ativo, é um legado. 
-                        Mais do que um recurso económico, é património, identidade e futuro.
+                    <!-- INTRO PARAGRAPH -->
+                    <p style="line-height:1.9; color:#2F3526; text-align:justify; margin-bottom:3rem; font-size:1.05rem;">
+                        A TerraPrimus é uma plataforma dedicada à representação e comercialização de propriedades com potencial de desenvolvimento no Alentejo — quintas, herdades, terrenos e edifícios com valor agrícola, turístico ou imobiliário. Reunimos um portefólio de propriedades selecionadas com claro potencial de valorização, funcionando como uma plataforma imobiliária especializada em ativos rurais de escala relevante.
                     </p>
 
-                    <p style="line-height:1.8; color:#2F3526; margin-bottom:3rem;">
-                        Somos uma estrutura dedicada à representação estratégica de ativos territoriais, onde o conhecimento, 
-                        a técnica e a visão de longo prazo se cruzam. Atuamos de forma integrada nos setores da agricultura, 
-                        turismo e outras indústrias da região.
-                    </p>
+                    <!-- ICON CALLOUT 1 -->
+                    <div style="display:flex; align-items:flex-start; gap:1.25rem; margin-bottom:2.5rem; padding:1.75rem 2rem; background:rgba(156,122,60,0.06); border-left:2px solid #9C7A3C;">
+                        <i data-lucide="calculator" style="width:22px; height:22px; color:#9C7A3C; flex-shrink:0; margin-top:3px;"></i>
+                        <p style="line-height:1.9; color:#2F3526; text-align:justify; margin:0;">
+                            Muitas destas propriedades têm possibilidades interessantes, mas nem sempre é fácil para proprietários ou investidores compreenderem o que um projeto pode, de forma realista, representar em termos financeiros. Frequentemente recorre-se a estimativas aproximadas ou a folhas de cálculo complexas.
+                            <br><br>
+                            O nosso website oferece uma forma simples de explorar esse potencial. Através da nossa <strong style="font-weight:500; color:#2F3526;">simulador de investimento</strong>, os utilizadores podem testar diferentes cenários e obter uma estimativa das receitas, das necessidades de financiamento e do potencial de retorno de um projeto.
+                        </p>
+                    </div>
 
-                    <!-- Serviços -->
-                    <div style="display:flex; flex-direction:column;">
+                    <!-- ICON CALLOUT 2 -->
+                    <div style="display:flex; align-items:flex-start; gap:1.25rem; margin-bottom:2.5rem; padding:1.75rem 2rem; background:rgba(156,122,60,0.06); border-left:2px solid #9C7A3C;">
+                        <i data-lucide="network" style="width:22px; height:22px; color:#9C7A3C; flex-shrink:0; margin-top:3px;"></i>
+                        <p style="line-height:1.9; color:#2F3526; text-align:justify; margin:0;">
+                            Trabalhamos com uma rede de parceiros especializados em áreas como agricultura, turismo rural, energia e promoção imobiliária, permitindo avaliar e estruturar diferentes possibilidades de desenvolvimento para cada propriedade, desde a aquisição até, quando relevante, à sua execução.
+                        </p>
+                    </div>
 
-                        <div style="display:grid; grid-template-columns:2rem 1fr; gap:1rem; padding:1.75rem 0; border-top:1px solid rgba(62,74,63,0.12);">
-                            <i data-lucide="handshake" style="width:18px; height:18px; color:#9C7A3C;"></i>
-                            <div>
-                                <p style="font-family:'Instrument Sans',sans-serif; font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:#9C7A3C; margin-bottom:0.5rem;">Mediação de Imóveis Exclusivos</p>
-                                <p style="line-height:1.7; color:#2F3526;">Representação discreta na aquisição e alienação de propriedades singulares através de uma rede de contactos exclusiva.</p>
-                            </div>
-                        </div>
-
-                        <div style="display:grid; grid-template-columns:2rem 1fr; gap:1rem; padding:1.75rem 0; border-top:1px solid rgba(62,74,63,0.12);">
-                            <i data-lucide="leaf" style="width:18px; height:18px; color:#9C7A3C;"></i>
-                            <div>
-                                <p style="font-family:'Instrument Sans',sans-serif; font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:#9C7A3C; margin-bottom:0.5rem;">Gestão e Serviços Agrícolas</p>
-                                <p style="line-height:1.7; color:#2F3526;">Acompanhamento técnico e operacional de ativos agrícolas, focando na eficiência e rentabilidade produtiva.</p>
-                            </div>
-                        </div>
-
-                        <div style="display:grid; grid-template-columns:2rem 1fr; gap:1rem; padding:1.75rem 0; border-top:1px solid rgba(62,74,63,0.12);">
-                            <i data-lucide="hotel" style="width:18px; height:18px; color:#9C7A3C; margin-top:3px;"></i>
-                            <div>
-                                <p style="font-family:'Instrument Sans',sans-serif; font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:#9C7A3C; margin-bottom:0.5rem;">Desenvolvimento de Projetos Turísticos</p>
-                                <p style="line-height:1.7; color:#2F3526;">Estruturação de investimentos turísticos integrados que respeitam a sustentabilidade e a herança do território.</p>
-                            </div>
-                        </div>
-
-                        <div style="display:grid; grid-template-columns:2rem 1fr; gap:1rem; padding:1.75rem 0; border-top:1px solid rgba(62,74,63,0.12); border-bottom:1px solid rgba(62,74,63,0.12);">
-                            <i data-lucide="coins" style="width:18px; height:18px; color:#9C7A3C;"></i>
-                            <div>
-                                <p style="font-family:'Instrument Sans',sans-serif; font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:#9C7A3C; margin-bottom:0.5rem;">Consultoria em Investimento e Vistos Gold</p>
-                                <p style="line-height:1.7; color:#2F3526;">Aconselhamento estratégico em investimento e processos de residência, garantindo segurança jurídica e financeira.</p>
-                            </div>
-                        </div>
-
+                    <!-- CLOSING STATEMENT -->
+                    <div style="display:flex; align-items:flex-start; gap:1.25rem; padding:1.75rem 2rem; background:rgba(47,53,38,0.04); border-left:2px solid #2F3526;">
+                        <i data-lucide="handshake" style="width:22px; height:22px; color:#2F3526; flex-shrink:0; margin-top:3px;"></i>
+                        <p style="line-height:1.9; color:#2F3526; text-align:justify; margin:0; font-style:italic;">
+                            O objetivo é simples: ligar propriedades com potencial a investidores e projetos capazes de as desenvolver de forma sólida e sustentável — focados em projetos, e não apenas em transações.
+                        </p>
                     </div>
 
                 </div>
