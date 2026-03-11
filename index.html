@@ -93,20 +93,20 @@
     </style>
 </head>
 
-<body class="bg-[#FBF8EF] text-black antialiased">
+<body class="bg-[#FBF8EF] text-black antialiased" style="overflow-x:hidden; max-width:100vw;">
 
 <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500"
-     style="background: rgb(201,210,194); border-bottom: 1px solid rgba(62,74,63,0.10);">
+     style="background: rgb(201,210,194); border-bottom: 1px solid rgba(62,74,63,0.10); max-width:100vw; overflow:hidden;">
 
-    <div id="nav-inner" class="mx-auto px-6 lg:px-10 lg:max-w-7xl w-full flex items-center justify-between"
-         style="height: 72px;">
+    <div id="nav-inner" class="mx-auto px-4 lg:px-10 lg:max-w-7xl w-full flex items-center justify-between"
+         style="height: 72px; box-sizing:border-box;">
 
         <div class="flex items-center gap-3 cursor-pointer" data-route="properties">
             <img src="./logo.webp" alt="TerraPrimus"
                  loading="eager" fetchpriority="high" decoding="async"
-                 style="height:44px; width:auto; object-fit:contain;">
+                 style="height:36px; width:auto; object-fit:contain;">
             <div style="display:flex; flex-direction:column; line-height:1; gap:5px;">
-                <span id="brand-name" style="font-family:'Instrument Serif',serif; font-size:1.6rem; color:#2F3526; letter-spacing:0.02em; white-space:nowrap;">
+                <span id="brand-name" style="font-family:'Instrument Serif',serif; font-size:1.3rem; color:#2F3526; letter-spacing:0.02em; white-space:nowrap;">
                     TerraPrimus
                 </span>
                 <span id="brand-sub" style="font-family:'Instrument Sans',sans-serif; font-size:0.6rem; text-transform:uppercase; color:#9C7A3C; display:none; white-space:nowrap;">
@@ -132,7 +132,7 @@
 
         <button id="mobile-menu-btn"
             class="lg:hidden"
-            style="color:#3E4A3F; background:none; border:none; cursor:pointer; padding:8px;">
+            style="color:#3E4A3F; background:none; border:none; cursor:pointer; padding:8px; flex-shrink:0;">
             <i id="mobile-menu-icon" data-lucide="menu" style="width:24px; height:24px;"></i>
         </button>
 
