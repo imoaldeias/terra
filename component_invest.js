@@ -1,63 +1,15 @@
 export function renderInvest() {
     return `
-        <style>
-            #invest-type-grid {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-            #invest-main-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1.5rem;
-                align-items: start;
-            }
-            #invest-kpi-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 0.75rem;
-                margin-bottom: 1.25rem;
-            }
-            .invest-field-row {
-                display: grid;
-                grid-template-columns: 1fr 100px;
-                align-items: center;
-                gap: 0.75rem;
-                padding: 0.45rem 0;
-                border-bottom: 1px solid rgba(62,74,63,0.06);
-            }
-            @media (max-width: 768px) {
-                #invest-main-grid {
-                    grid-template-columns: 1fr;
-                }
-                .invest-field-row {
-                    grid-template-columns: 1fr 85px;
-                    gap: 0.5rem;
-                }
-                #invest-kpi-grid {
-                    grid-template-columns: 1fr 1fr;
-                }
-                .type-btn span {
-                    display: none;
-                }
-                .type-btn {
-                    padding: 0.6rem 0.75rem !important;
-                    justify-content: center;
-                }
-            }
-            @media (max-width: 400px) {
-                .invest-field-row {
-                    grid-template-columns: 1fr 75px;
-                }
-            }
-        </style>
-
         <section class="pt-6 pb-16 lg:pt-12 lg:pb-24" style="background:#FAF7F2;">
             <div class="max-w-6xl mx-auto px-4 lg:px-6">
 
                 <!-- HEADER -->
                 <div style="margin-bottom:1.5rem;">
                     <span class="label mb-2 block">Ferramenta de Análise</span>
+                    <div style="display:inline-flex;gap:0.5rem;margin-bottom:1rem;margin-top:0.5rem;">
+                        <span style="font-family:'Instrument Sans',sans-serif;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.4rem 1rem;border:1px solid #2F3526;background:#2F3526;color:#FAF7F2;border-radius:4px;">Simples</span>
+                        <span data-route="complexinvest" style="font-family:'Instrument Sans',sans-serif;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.4rem 1rem;border:1px solid rgba(62,74,63,0.25);background:transparent;color:#2F3526;border-radius:4px;cursor:pointer;">Complexo</span>
+                    </div>
                     <h1 style="line-height:1.1;">Simulador de Investimento</h1>
                     <p style="margin-top:0.5rem; color:#6b7a5e; font-size:0.88rem; line-height:1.5;">
                         Introduza os dados do seu projeto e obtenha os indicadores financeiros essenciais.
@@ -73,7 +25,7 @@ export function renderInvest() {
 
                 <!-- TYPE SELECTOR -->
                 <div style="margin-bottom:1.25rem;">
-                    <div id="invest-type-grid">
+                    <div id="invest-type-grid" style="display:flex;flex-wrap:wrap;gap:0.5rem;">
                         <button class="type-btn active" data-type="tourism"
                             style="display:flex;align-items:center;gap:0.5rem;padding:0.7rem 1rem;border:1px solid #2F3526;background:#2F3526;color:#FAF7F2;border-radius:4px;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;">
                             <i data-lucide="hotel" style="width:14px;height:14px;flex-shrink:0;"></i>
@@ -97,12 +49,12 @@ export function renderInvest() {
                     </div>
                 </div>
 
-                <!-- MAIN GRID: inputs + results -->
+                <!-- MAIN GRID: inputs + results — layout injected by initInvest() -->
                 <div id="invest-main-grid">
 
                     <!-- LEFT: INPUTS -->
-                    <div style="background:#fff;border:1px solid rgba(62,74,63,0.12);border-radius:4px;padding:1.25rem;">
-                        <div id="form-fields" style="display:flex;flex-direction:column;gap:0;"></div>
+                    <div style="background:#fff;border:1px solid rgba(62,74,63,0.12);border-radius:4px;padding:1.25rem;display:flex;flex-direction:column;">
+                        <div id="form-fields" style="display:flex;flex-direction:column;gap:0;flex:1;"></div>
                         <p id="calc-error" style="display:none;font-family:'Instrument Sans',sans-serif;font-size:0.75rem;color:#c0392b;margin-top:0.75rem;text-align:center;"></p>
                         <button id="btn-calculate" style="width:100%;margin-top:1.25rem;padding:0.75rem;border:1px solid #2F3526;background:#2F3526;color:#FAF7F2;cursor:pointer;font-family:'Instrument Sans',sans-serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;border-radius:4px;transition:all 0.3s;">
                             Calcular
@@ -110,12 +62,12 @@ export function renderInvest() {
                     </div>
 
                     <!-- RIGHT: RESULTS -->
-                    <div style="background:#fff;border:1px solid rgba(62,74,63,0.12);border-radius:4px;padding:1.25rem;">
+                    <div style="background:#fff;border:1px solid rgba(62,74,63,0.12);border-radius:4px;padding:1.25rem;display:flex;flex-direction:column;">
 
                         <p style="font-family:'Instrument Sans',sans-serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#9C7A3C;margin-bottom:1rem;">Resultados</p>
 
                         <!-- 4 KPI CARDS -->
-                        <div id="invest-kpi-grid">
+                        <div id="invest-kpi-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.25rem;flex:1;">
                             <div style="background:#EDE8E0;padding:1.25rem;border-radius:4px;">
                                 <p id="kpi1-label" style="font-family:'Instrument Sans',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:#9C7A3C;margin-bottom:0.4rem;">Receita Anual</p>
                                 <p id="kpi1-value" style="font-family:'Instrument Serif',serif;font-size:1.6rem;color:#2F3526;margin:0;line-height:1;">—</p>
@@ -163,6 +115,40 @@ export function renderInvest() {
 
 export function initInvest() {
 
+    // Inject styles here — DOMPurify strips <style> tags from innerHTML,
+    // so we add them programmatically after the component is rendered.
+    const styleId = 'invest-styles';
+    if (!document.getElementById(styleId)) {
+        const s = document.createElement('style');
+        s.id = styleId;
+        s.textContent = `
+            #invest-main-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+                align-items: stretch;
+            }
+            .invest-field-row {
+                display: grid;
+                grid-template-columns: 1fr 100px;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.45rem 0;
+                border-bottom: 1px solid rgba(62,74,63,0.06);
+            }
+            @media (max-width: 768px) {
+                #invest-main-grid { grid-template-columns: 1fr; }
+                .invest-field-row { grid-template-columns: 1fr 85px; gap: 0.5rem; }
+                .type-btn span { display: none; }
+                .type-btn { padding: 0.6rem 0.75rem !important; justify-content: center; }
+            }
+            @media (max-width: 400px) {
+                .invest-field-row { grid-template-columns: 1fr 75px; }
+            }
+        `;
+        document.head.appendChild(s);
+    }
+
     let currentType = 'tourism';
 
     const IS = `width:100%;border:none;border-bottom:1px solid rgba(62,74,63,0.2);background:transparent;padding:0.4rem 0;font-family:'Instrument Sans',sans-serif;font-size:0.9rem;color:#2F3526;outline:none;`;
@@ -178,7 +164,7 @@ export function initInvest() {
         const live = opts.live
             ? `<span id="${opts.live}" style="font-family:'Instrument Sans',sans-serif;font-size:0.65rem;color:#9C7A3C;display:block;text-align:right;margin-top:0.1rem;min-height:0.8rem;"></span>`
             : '';
-        return `<div class="invest-field-row">
+        return `<div class="invest-field-row" style="display:grid;grid-template-columns:1fr 100px;align-items:center;gap:0.75rem;padding:0.45rem 0;border-bottom:1px solid rgba(62,74,63,0.06);">
                     <label style="${LS};margin:0;">${label}${live}</label>
                     <input type="number" id="${id}" min="0"
                         ${opts.step ? `step="${opts.step}"` : ''}

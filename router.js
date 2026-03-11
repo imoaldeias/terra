@@ -4,6 +4,7 @@ import { renderHero }                                    from './component_hero.
 import { renderProperties, initProperties }              from './component_properties.js';
 import { renderSell, initSell }                          from './component_sell.js';
 import { renderInvest, initInvest }                      from './component_invest.js';
+import { renderComplexInvest, initComplexInvest }        from './component_complexinvest.js';
 import { renderPropertyDetail, initPropertyDetail }      from './component_property_detail.js';
 import { FavManager }                                    from './main.js';
 
@@ -29,6 +30,7 @@ export function renderRoute() {
         case 'sell':       content = renderSell();        break;
         case 'contact':    content = renderSell();        break;
         case 'invest':     content = renderInvest();      break;
+        case 'complexinvest': content = renderComplexInvest(); break;
         default:
             if (hash.startsWith('property-')) {
                 content = renderPropertyDetail(hash.replace('property-', ''));
@@ -50,6 +52,7 @@ export function renderRoute() {
         // Each component owns its own init logic
         if (hash === 'properties')            initProperties();
         if (hash === 'invest')                initInvest();
+        if (hash === 'complexinvest')         initComplexInvest();
         if (hash === 'sell' || hash === 'contact') initSell();
         if (hash.startsWith('property-'))     initPropertyDetail(hash.replace('property-', ''));
 
