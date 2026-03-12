@@ -277,6 +277,7 @@
             document.body.innerHTML = '<div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:sans-serif;color:#999;">Acesso negado.</div>';
         } else {
             sessionStorage.setItem('tp_auth', '1');
+            window.location.reload();
         }
     }
 </script>

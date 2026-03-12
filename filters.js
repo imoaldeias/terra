@@ -179,7 +179,7 @@ export function clearFilters() {
     currentSort = 'default';
 
     const sortBtn = document.getElementById('btn-sort');
-    if (sortBtn) sortBtn.innerText = 'Ordenar: —';
+    if (sortBtn) sortBtn.value = 'default';
 
     applyFilters();
 }
@@ -189,18 +189,14 @@ export function clearFilters() {
 ===================================================== */
 
 export function cycleSort() {
-    if (currentSort === 'default')    currentSort = 'price-asc';
-    else if (currentSort === 'price-asc')  currentSort = 'price-desc';
-    else                              currentSort = 'default';
-
-    const btn = document.getElementById('btn-sort');
-    if (btn) {
-        if (currentSort === 'default')     btn.innerText = 'Ordenar: —';
-        if (currentSort === 'price-asc')   btn.innerText = 'Ordenar: Preço ↑';
-        if (currentSort === 'price-desc')  btn.innerText = 'Ordenar: Preço ↓';
+    const select = document.getElementById('btn-sort');
+    if (select) {
+        currentSort = select.value;
     }
-
-    applyFilters();
+    if (currentFilteredList.length === 0) {
+        currentFilteredList = [...appData.properties];
+    }
+    renderPaginatedProperties(applySorting(currentFilteredList));
 }
 
 /* =====================================================

@@ -79,12 +79,6 @@ export function renderProperties() {
                 <div id="filters-bar"
                     style="display:grid; margin-bottom:2rem; grid-template-columns:repeat(2, 1fr); gap:1rem;">
 
-                    <style>
-                        @media (min-width: 768px) {
-                            #filters-bar { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
-                        }
-                    </style>
-
                     ${renderSelect('filter-location', 'Localização',
                         [...new Set(appData.properties.map(p => p.locationNormalized))]
                             .map(loc => ({
@@ -130,15 +124,16 @@ export function renderProperties() {
                             { value: '5', label: '5+' }
                         ])}
 
-                    <!-- ORDENAR -->
-                    <div class="flex flex-col">
-                        <label for="filter-sort" class="label mb-1">Ordenar</label>
+                    <!-- BOTÕES -->
+                    <!-- BOTÕES -->
+                    <div style="grid-column: 1 / -1; display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:0.5rem; align-items:center;">
+
                         <select
-                            id="filter-sort"
-                            class="border-b border-gray-300 bg-transparent py-1 px-1 focus:outline-none focus:border-black transition"
-                            style="font-size:0.78rem;"
+                            id="btn-sort"
+                            class="border border-black px-4 py-2 bg-transparent hover:bg-black hover:text-white transition duration-300"
+                            style="font-size:0.78rem; cursor:pointer;"
                         >
-                            <option value="default">—</option>
+                            <option value="default">Ordenar —</option>
                             <option value="price-asc">Preço ↑</option>
                             <option value="price-desc">Preço ↓</option>
                             <option value="area-asc">Área ↑</option>
@@ -146,10 +141,9 @@ export function renderProperties() {
                             <option value="rooms-asc">Quartos ↑</option>
                             <option value="rooms-desc">Quartos ↓</option>
                         </select>
-                    </div>
 
-                    <!-- BOTÕES -->
-                    <div style="grid-column: 1 / -1; display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:0.5rem;">
+                        <button
+                            id="btn-apply-filters"
 
                         <button
                             id="btn-apply-filters"
@@ -240,7 +234,7 @@ function renderSelect(id, label, options) {
    INIT — wires up filters after render
 ===================================================== */
 
-import { applyFilters } from './filters.js';
+import { applyFilters, cycleSort } from './filters.js';
 
 export function initProperties() {
     // Attach change listeners to filter selects
@@ -257,6 +251,10 @@ export function initProperties() {
         if (closeBtn) closeBtn.style.display = 'none';
         if (openBtn)  openBtn.style.display  = 'inline-block';
     }
+
+    // Wire sort select
+    const sortSelect = document.getElementById('btn-sort');
+    if (sortSelect) sortSelect.addEventListener('change', cycleSort);
 
     // Render the initial unfiltered list
     applyFilters();

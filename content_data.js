@@ -50,10 +50,10 @@ function normalizeProperty(p) {
         ),
 
         price: escapeHTML((p.price || '').trim()),
-        description: escapeHTML((p.description || '').trim()),
+        description: (p.description || '').trim(),
 
         priceValue: p.priceValue && p.priceValue.trim() !== ''
-            ? parseInt(p.priceValue.trim())
+            ? parseInt(p.priceValue.trim().replace(/\s/g, '').replace('.', '').replace(',', '.'))
             : null,
 
         areaConstruida: toNumber(p.areaConstruida),
@@ -61,6 +61,8 @@ function normalizeProperty(p) {
         quartos: toNumber(p.quartos),
 
         gallery_ids: (p.gallery_ids || '').trim(),
+
+        youtube_id: (p.youtube_id || '').trim(),
 
         image: p.image_capa && p.image_capa.trim() !== ''
             ? p.image_capa.trim()
@@ -72,41 +74,59 @@ function normalizeProperty(p) {
 
 function parseCSV(text) {
     const rows = [];
-    const lines = text.trim().split(/\r?\n/);
+    const headers = [];
 
-    // Properly handle quoted CSV
-    const parseLine = (line) => {
-        const result = [];
-        let current = '';
-        let insideQuotes = false;
+    let i = 0;
 
-        for (let i = 0; i < line.length; i++) {
-            const char = line[i];
-
-            if (char === '"') {
-                insideQuotes = !insideQuotes;
-            } else if (char === ',' && !insideQuotes) {
-                result.push(current);
-                current = '';
-            } else {
-                current += char;
+    function parseField() {
+        if (text[i] === '"') {
+            i++; // skip opening quote
+            let field = '';
+            while (i < text.length) {
+                if (text[i] === '"' && text[i + 1] === '"') {
+                    field += '"';
+                    i += 2;
+                } else if (text[i] === '"') {
+                    i++; // skip closing quote
+                    break;
+                } else {
+                    field += text[i++];
+                }
             }
+            return field;
+        } else {
+            let field = '';
+            while (i < text.length && text[i] !== ',' && text[i] !== '\n' && text[i] !== '\r') {
+                field += text[i++];
+            }
+            return field.trim();
         }
+    }
 
-        result.push(current);
-        return result.map(v => v.replace(/^"|"$/g, '').trim());
-    };
+    function parseRow() {
+        const fields = [];
+        while (i < text.length && text[i] !== '\n' && text[i] !== '\r') {
+            fields.push(parseField());
+            if (text[i] === ',') i++;
+        }
+        // skip \r\n or \n
+        if (text[i] === '\r') i++;
+        if (text[i] === '\n') i++;
+        return fields;
+    }
 
-    const headers = parseLine(lines[0]);
+    // Parse headers
+    const headerFields = parseRow();
+    headerFields.forEach(h => headers.push(h.trim()));
 
-    for (let i = 1; i < lines.length; i++) {
-        const values = parseLine(lines[i]);
+    // Parse data rows
+    while (i < text.length) {
+        const fields = parseRow();
+        if (fields.every(f => f === '')) continue;
         const obj = {};
-
-        headers.forEach((header, index) => {
-            obj[header.trim()] = values[index] || '';
+        headers.forEach((h, idx) => {
+            obj[h] = fields[idx] || '';
         });
-
         rows.push(obj);
     }
 
@@ -134,6 +154,7 @@ export async function loadSiteData() {
         appData.properties = cleanData;
 
         console.log("✅ Propriedades carregadas:", cleanData.length);
+        console.log("🔑 Chaves da primeira propriedade:", Object.keys(cleanData[0]));
 
         return cleanData;
 

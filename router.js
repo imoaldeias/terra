@@ -21,7 +21,8 @@ export function navigateTo(route) {
    Render whatever the current hash says.
 ───────────────────────────────────────────── */
 export function renderRoute() {
-    const hash = window.location.hash.replace('#', '') || 'properties';
+    const rawHash = window.location.hash.replace('#', '');
+const hash = rawHash || 'properties';
     let content = '';
 
     switch (hash) {
@@ -50,7 +51,7 @@ export function renderRoute() {
         FavManager.updateUI();
 
         // Each component owns its own init logic
-        if (hash === 'properties')            initProperties();
+        if (hash === 'properties' || rawHash === '')  initProperties();
         if (hash === 'invest')                initInvest();
         if (hash === 'complexinvest')         initComplexInvest();
         if (hash === 'sell' || hash === 'contact') initSell();

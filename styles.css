@@ -172,3 +172,10 @@ textarea:focus {
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
+
+@media (min-width: 768px) {
+    #filters-bar { 
+        grid-template-columns: repeat(3, 1fr) !important; 
+        gap: 1.5rem !important; 
+    }
+}
