@@ -115,7 +115,7 @@ export function renderComplexInvest() {
                                     <div class="cx-metric-row"><span class="cx-metric-label">NOI / EBITDA</span><span id="res-noi" class="cx-metric-value">—</span></div>
                                     <div class="cx-metric-row"><span class="cx-metric-label">Receita Anual</span><span id="res-rev" class="cx-metric-value">—</span></div>
                                     <div class="cx-metric-row"><span class="cx-metric-label">Yield on Cost</span><span id="res-yoc" class="cx-metric-value">—</span></div>
-                                    <div class="cx-metric-row"><span class="cx-metric-label">Margem Desenvolvimento</span><span id="res-devmargin" class="cx-metric-value">—</span></div>
+                                    <div class="cx-metric-row"><span class="cx-metric-label">Margem Operacional</span><span id="res-devmargin" class="cx-metric-value">—</span></div>
                                     <div class="cx-metric-row"><span class="cx-metric-label">Lucro sobre Custo</span><span id="res-poc" class="cx-metric-value">—</span></div>
                                     <div class="cx-metric-row"><span class="cx-metric-label">Payback</span><span id="res-payback" class="cx-metric-value">—</span></div>
                                     <div class="cx-metric-row"><span class="cx-metric-label">Valor de Saída</span><span id="res-exit" class="cx-metric-value">—</span></div>
@@ -412,7 +412,6 @@ export function initComplexInvest() {
         if (equity <= 0) return;
 
         const debtService  = annualDebtService(loanAmt, rate, years);
-        const interestOnly = loanAmt * rate;
         const el = id => document.getElementById(id);
 
         // ── REAL ESTATE ──────────────────────────────────────────────────────
@@ -493,26 +492,48 @@ export function initComplexInvest() {
             annualOpCost     = (mwSolar + mwWind) * 20000;
         }
 
-        const noi         = annualRevenue - annualOpCost;
-        const annualCF    = noi - debtService;
-        const annualCFirr = noi - interestOnly;
+        const noi      = annualRevenue - annualOpCost;
+        const annualCF = noi - debtService;   // true annual cash flow after full debt service
 
         const exitValue = exitOverride > 0 ? exitOverride
                         : capRate > 0 ? noi / capRate
                         : totalCost;
 
-        const cashflows = [-equity, ...Array(years - 1).fill(annualCFirr), annualCFirr + exitValue - loanAmt];
+        // ── Remaining loan balance after `years` of amortisation ──────────────
+        // With a standard annuity mortgage the outstanding balance at year N is:
+        //   B = P * [(1+r)^N - (1+r/12*12)^(N*12)] ... simplified to monthly:
+        const loanBalance = (() => {
+            if (loanAmt <= 0 || rate <= 0) return 0;
+            const r = rate / 12, n = years * 12;
+            const monthlyPayment = loanAmt * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            // Balance after n payments
+            return loanAmt * Math.pow(1 + r, n) - monthlyPayment * (Math.pow(1 + r, n) - 1) / r;
+        })();
+
+        // ── 1 & 4: Levered IRR — use actual CF each year; exit nets remaining balance ──
+        // Year 0: -equity (cash out)
+        // Years 1…N-1: annualCF (NOI minus full debt service)
+        // Year N: annualCF + exitValue - loanBalance (sale proceeds net of payoff)
+        const cashflows = [-equity, ...Array(years - 1).fill(annualCF), annualCF + exitValue - loanBalance];
         const unfLevCfs = [-totalCost, ...Array(years - 1).fill(noi), noi + exitValue];
         const irrLev    = calcIRR(cashflows);
         const irrUnlev  = calcIRR(unfLevCfs);
         const npv       = calcNPV(cashflows, discountRate);
 
-        const totalReturn = annualCF * years + (exitValue - totalCost);
-        const moic        = equity > 0 ? (equity + totalReturn) / equity : null;
-        const roe         = equity > 0 ? (annualCF / equity) * 100 : null;
-        const yieldOnCost = totalCost > 0 ? (noi / totalCost) * 100 : null;
-        const devMargin   = annualRevenue > 0 ? (noi / annualRevenue) * 100 : null;
-        const profitOnCost= totalCost > 0 ? (noi * years / totalCost) * 100 : null;
+        // ── 2: MOIC — total equity cash in / equity invested (includes exit) ──
+        // Total received = annual CFs over hold + net exit proceeds
+        const netExitToEquity = exitValue - loanBalance;
+        const totalEquityIn   = annualCF * years + netExitToEquity;
+        const moic = equity > 0 ? totalEquityIn / equity : null;
+
+        // ROE — net profit to equity / equity invested (total hold, includes exit)
+        const roe          = equity > 0 ? ((totalEquityIn - equity) / equity) * 100 : null;
+        // Cash-on-Cash — annual operating yield on equity (excludes exit)
+        const coc          = equity > 0 ? (annualCF / equity) * 100 : null;
+        const yieldOnCost  = totalCost > 0 ? (noi / totalCost) * 100 : null;
+        const devMargin    = annualRevenue > 0 ? (noi / annualRevenue) * 100 : null;
+        // Profit on Cost: asset value gain over total cost invested
+        const profitOnCost = totalCost > 0 ? ((exitValue - totalCost) / totalCost) * 100 : null;
         const ltv         = exitValue > 0 ? (loanAmt / exitValue) * 100 : null;
         const ltc         = totalCost > 0 ? (loanAmt / totalCost) * 100 : null;
         const dscr        = debtService > 0 ? noi / debtService : null;
@@ -528,7 +549,7 @@ export function initComplexInvest() {
         el('res-moic').textContent       = fmtX(moic);
         el('res-npv').textContent        = fmt(npv);
         el('res-roe').textContent        = fmtPct(roe);
-        el('res-coc').textContent        = fmtPct(roe);
+        el('res-coc').textContent        = fmtPct(coc);
         el('res-total-cost').textContent = fmt(totalCost);
         el('res-noi').textContent        = fmt(noi);
         el('res-rev').textContent        = fmt(annualRevenue);
@@ -552,7 +573,7 @@ export function initComplexInvest() {
         for (let delta = -1.5; delta <= 1.55; delta += 0.5) {
             const capR   = Math.max(0.5, baseCapPct + delta) / 100;
             const ev     = noi / capR;
-            const cfs2   = [-equity, ...Array(years - 1).fill(annualCFirr), annualCFirr + ev - loanAmt];
+            const cfs2   = [-equity, ...Array(years - 1).fill(annualCF), annualCF + ev - loanBalance];
             const irr2   = calcIRR(cfs2);
             const isBase = Math.abs(delta) < 0.01;
             const row    = document.createElement('div');
@@ -579,9 +600,11 @@ export function initComplexInvest() {
             const adjNOI  = adjRev - adjCost;
             const adjCF   = adjNOI - debtService;
             const adjExit = capRate > 0 ? adjNOI / capRate : exitValue * s.revMult;
-            const cfs2    = [-equity, ...Array(years - 1).fill(adjNOI - interestOnly), adjNOI - interestOnly + adjExit - loanAmt];
+            const adjNetExit = adjExit - loanBalance;
+            const cfs2    = [-equity, ...Array(years - 1).fill(adjCF), adjCF + adjNetExit];
             const irr2    = calcIRR(cfs2);
-            const moic2   = equity > 0 ? (equity + adjCF * years + (adjExit - totalCost)) / equity : null;
+            const adjTotalIn = adjCF * years + adjNetExit;
+            const moic2   = equity > 0 ? adjTotalIn / equity : null;
             const block   = document.createElement('div');
             block.style.cssText = `background:${s.bg};border-radius:4px;padding:0.75rem;`;
             block.innerHTML = `
@@ -613,7 +636,7 @@ export function initComplexInvest() {
 
         // Chart
         const chartCFs = Array(years).fill(annualCF);
-        chartCFs[years - 1] = annualCF + exitValue;
+        chartCFs[years - 1] = annualCF + exitValue - loanBalance;
         drawChart(chartCFs, equity);
     }
 
